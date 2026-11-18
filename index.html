@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>NAT SECURITY - Professional Xavfsizlik Tizimlari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@700;800;900&display=swap');
+
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --gold-primary: #b48512;
+      --gold-hover: #996e08;
+      --gold-light: #fffbeb;
+      --gold-border: #fde68a;
+      --brand-blue: #0284c7;
+      --accent-green: #059669;
+      --danger-red: #ef4444;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 8px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 20px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 12px 14px 100px 14px;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: #ffffff;
+      border: 1px solid var(--gold-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #0f172a;
+      line-height: 1.1;
+    }
+
+    .brand-title span {
+      color: var(--gold-primary);
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .admin-pill {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger-red);
+      padding: 5px 10px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-pill {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cart-badge {
+      background: var(--gold-primary);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+
+    /* MAIN NAVIGATION TABS (KSS.UZ ANALOGI: KATALOG, KALKULYATOR, XIZMATLAR) */
+    .nav-tabs-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .nav-tab-btn {
+      padding: 9px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-tab-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* PROMO BANNER */
+    .promo-banner {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1px solid var(--gold-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .promo-banner h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 2px;
+    }
+    .promo-banner p {
+      font-size: 11px;
+      color: #78350f;
+    }
+
+    .badge-free {
+      background: #d97706;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    /* SUB-CATEGORY CHIPS */
+    .chip-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .chip-scroll::-webkit-scrollbar { display: none; }
+
+    .chip-btn {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chip-btn.active {
+      background: var(--gold-primary);
+      border-color: var(--gold-primary);
+      color: #ffffff;
+    }
+
+    /* GRID & PRODUCT CARD */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .item-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .item-icon {
+      width: 100%;
+      height: 85px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .item-tag {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+
+    .item-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 4px;
+      min-height: 32px;
+    }
+
+    .item-desc {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-bottom: 8px;
+      min-height: 28px;
+    }
+
+    .item-price {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 8px;
+      background: #ffffff;
+      border: 1.5px solid var(--gold-primary);
+      color: var(--gold-primary);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-buy:active {
+      background: var(--gold-primary);
+      color: #ffffff;
+    }
+
+    .qty-box {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1.5px solid var(--gold-primary);
+      border-radius: 8px;
+      padding: 2px;
+    }
+
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      background: var(--gold-primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .qty-count {
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    /* FULL WIDTH CARD (XIZMATLAR VA TAYYOR YECHIMLAR) */
+    .row-card {
+      grid-column: span 2;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+    }
+    .row-card .item-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    /* ================================================= */
+    /* SMETA KALKULYATORI (KSS.UZ USLUBIDAGI INTERAKTIV UI) */
+    /* ================================================= */
+    .calculator-panel {
+      display: none;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .calc-step {
+      margin-bottom: 16px;
+    }
+
+    .calc-step-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-step-title span {
+      background: var(--gold-light);
+      color: var(--gold-primary);
+      border: 1px solid var(--gold-border);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .calc-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .calc-btn-option {
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .calc-btn-option.selected {
+      background: #fffbeb;
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 1px var(--gold-primary);
+    }
+
+    .calc-btn-option .opt-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .calc-btn-option .opt-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .calc-summary-box {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    .calc-summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    .calc-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    .calc-total-price {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: #fde047;
+    }
+
+    .calc-add-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #d97706, #b48512);
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 12px;
+      box-shadow: 0 4px 10px rgba(180, 133, 18, 0.3);
+    }
+
+    /* MODAL DRAWER */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+    }
+    .drawer-overlay.active { display: block; }
+
+    .bottom-drawer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #ffffff;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 18px;
+      transform: translateY(100%);
+      transition: transform 0.25s ease-out;
+      z-index: 110;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+    }
+    .bottom-drawer.open { transform: translateY(0); }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 10px;
+    }
+    .drawer-header h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .cart-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 13px;
+    }
+
+    /* ADMIN DASHBOARD */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .admin-stat-item {
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      padding: 10px 6px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .admin-stat-val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      color: var(--gold-primary);
+      font-weight: 800;
+    }
+    .admin-stat-lbl {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .order-card-admin {
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand-wrap">
+      <img src="logo_light.jpg" alt="NAT Security" class="brand-logo-img">
+      <div>
+        <div class="brand-title">NAT <span>SECURITY</span></div>
+        <div class="brand-sub">Xavfsizlik tizimlari & SKUD • Buxoro</div>
+      </div>
+    </div>
+    <div class="header-btns">
+      <div class="admin-pill" id="btnOpenAdmin">⚙️ Admin</div>
+      <div class="cart-pill" id="btnOpenCart">
+        🛒 <span class="cart-badge" id="cartCountBadge">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <div class="promo-banner">
+    <div>
+      <h4>Bepul Obyekt Ko'rigi</h4>
+      <p>Muhandis tashrifi, loyihalash va smeta hisoblash</p>
+    </div>
+    <div class="badge-free">BEPUL</div>
+  </div>
+
+  <!-- 3 TA ASOSIY REJIM (KATALOG, SMETA KALKULYATORI, SERVIS) -->
+  <div class="nav-tabs-wrapper">
+    <div class="nav-tab-btn active" data-tab="catalog" id="tabCatalog">🛍️ Katalog</div>
+    <div class="nav-tab-btn" data-tab="calc" id="tabCalc">🧮 Kalkulyator</div>
+    <div class="nav-tab-btn" data-tab="services" id="tabServices">🛠️ Xizmatlar</div>
+  </div>
+
+  <!-- TOIFALAR (KAMERALAR, SKUD, TURNIKET, QULFLAR, KOMPLEKTLAR) -->
+  <div class="chip-scroll" id="chipScroll">
+    <button class="chip-btn active" data-filter="all">Barchasi</button>
+    <button class="chip-btn" data-filter="skud">🚪 SKUD & Qulflar</button>
+    <button class="chip-btn" data-filter="turniket">🚧 Turniket & Shlagbaum</button>
+    <button class="chip-btn" data-filter="outdoor">📹 Tashqi Kameralar</button>
+    <button class="chip-btn" data-filter="indoor">📷 Ichki Kameralar</button>
+    <button class="chip-btn" data-filter="ptz">🔄 PTZ 360°</button>
+    <button class="chip-btn" data-filter="colorvu">🌈 ColorVu 24/7</button>
+    <button class="chip-btn" data-filter="kits">📦 Tayyor Komplektlar</button>
+  </div>
+
+  <!-- ASOSIY KATALOG GRID -->
+  <div class="product-grid" id="catalogGrid"></div>
+
+  <!-- ============================================== -->
+  <!-- KSS.UZ ANALOGI: ONLAYN SMETA KALKULYATORI -->
+  <!-- ============================================== -->
+  <div class="calculator-panel" id="calculatorPanel">
+    <div style="margin-bottom:12px; border-bottom:1px solid var(--card-border); padding-bottom:8px;">
+      <h3 style="font-size:14px; font-weight:800; color:var(--text-main);">🧮 Videokuzatuv Smeta Kalkulyatori</h3>
+      <p style="font-size:11px; color:var(--text-muted);">Obyektingiz uchun mos to'plam va montaj narxini bir zumda hisoblang</p>
+    </div>
+
+    <!-- 1-QADAM: OBYEKT TURI -->
+    <div class="calc-step">
+      <div class="calc-step-title"><span>1</span> Obyekt turini tanlang:</div>
+      <div class="calc-options-grid">
+        <div class="calc-btn-option selected" data-step="object" data-val="hovli" onclick="selectCalcOption(this, 'object', 'hovli')">
+          <div class="opt-title">🏡 Hovli / Kottej</div>
+          <div class="opt-sub">Tashqi himoya</div>
+        </div>
+        <div class="calc-btn-option" data-step="object" data-val="dokon" onclick="selectCalcOption(this, 'object', 'dokon')">
+          <div class="opt-title">🏬 Do'kon / Apteka</div>
+          <div class="opt-sub">Kassa va zal nazorati</div>
+        </div>
+        <div class="calc-btn-option" data-step="object" data-val="ofis" onclick="selectCalcOption(this, 'object', 'ofis')">
+          <div class="opt-title">🏢 Ofis / Biznes</div>
+          <div class="opt-sub">Xodimlar nazorati</div>
+        </div>
+        <div class="calc-btn-option" data-step="object" data-val="ombor" onclick="selectCalcOption(this, 'object', 'ombor')">
+          <div class="opt-title">🏭 Ombor / Zavod</div>
+          <div class="opt-sub">Katta hudud</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2-QADAM: KAMERALAR SONI -->
+    <div class="calc-step">
+      <div class="calc-step-title"><span>2</span> Kameralar soni:</div>
+      <div class="calc-options-grid">
+        <div class="calc-btn-option" data-step="qty" data-val="2" onclick="selectCalcOption(this, 'qty', 2)">
+          <div class="opt-title">2 ta Kamera</div>
+          <div class="opt-sub">Kichik maydon</div>
+        </div>
+        <div class="calc-btn-option selected" data-step="qty" data-val="4" onclick="selectCalcOption(this, 'qty', 4)">
+          <div class="opt-title">4 ta Kamera</div>
+          <div class="opt-sub">Eng ommabop tanlov</div>
+        </div>
+        <div class="calc-btn-option" data-step="qty" data-val="8" onclick="selectCalcOption(this, 'qty', 8)">
+          <div class="opt-title">8 ta Kamera</div>
+          <div class="opt-sub">O'rta obyektlar</div>
+        </div>
+        <div class="calc-btn-option" data-step="qty" data-val="16" onclick="selectCalcOption(this, 'qty', 16)">
+          <div class="opt-title">16 ta Kamera</div>
+          <div class="opt-sub">Katta majmua</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-QADAM: KAMERA SIFATI -->
+    <div class="calc-step">
+      <div class="calc-step-title"><span>3</span> Kamera sifati va turi:</div>
+      <div class="calc-options-grid">
+        <div class="calc-btn-option" data-step="quality" data-val="standard" onclick="selectCalcOption(this, 'quality', 'standard')">
+          <div class="opt-title">Full HD (2MP)</div>
+          <div class="opt-sub">Kunduzgi / IQ tungi</div>
+        </div>
+        <div class="calc-btn-option selected" data-step="quality" data-val="colorvu" onclick="selectCalcOption(this, 'quality', 'colorvu')">
+          <div class="opt-title">ColorVu (4MP)</div>
+          <div class="opt-sub">24/7 Rangli tungi ko'rish</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4-QADAM: XOTIRA (ARXIV MUDDATI) -->
+    <div class="calc-step">
+      <div class="calc-step-title"><span>4</span> Video yozuv saqlash muddati:</div>
+      <div class="calc-options-grid">
+        <div class="calc-btn-option" data-step="hdd" data-val="10" onclick="selectCalcOption(this, 'hdd', 10)">
+          <div class="opt-title">10-15 kun</div>
+          <div class="opt-sub">1TB HDD disk</div>
+        </div>
+        <div class="calc-btn-option selected" data-step="hdd" data-val="30" onclick="selectCalcOption(this, 'hdd', 30)">
+          <div class="opt-title">30 kun (1 oy)</div>
+          <div class="opt-sub">2TB HDD disk</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KALKULYATOR XULOSASI (SMETA CHEKI) -->
+    <div class="calc-summary-box">
+      <div class="calc-summary-row">
+        <span>Kameralar va NVR registrator:</span>
+        <span id="calcEquipCost">2 100 000 so'm</span>
+      </div>
+      <div class="calc-summary-row">
+        <span>Xotira diski (HDD):</span>
+        <span id="calcHddCost">550 000 so'm</span>
+      </div>
+      <div class="calc-summary-row">
+        <span>Montaj, kabel va telefonga ulash:</span>
+        <span id="calcWorkCost">480 000 so'm</span>
+      </div>
+      <div class="calc-total-row">
+        <div>
+          <div style="font-size:11px; color:#94a3b8;">KALIT OSTIDA JAMI:</div>
+          <div class="calc-total-price" id="calcFinalSum">3 130 000 so'm</div>
+        </div>
+        <span style="background:#059669; font-size:10px; font-weight:800; padding:4px 8px; border-radius:6px;">KAFOLAT 1 YIL</span>
+      </div>
+      <button class="calc-add-btn" onclick="addCalculatedKitToCart()">
+        🛒 Ushbu Komplektni Savatga Qo'shish
+      </button>
+    </div>
+  </div>
+
+  <!-- SAVATCHA DRAWER -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="bottom-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h3>Savatcha & Tanlanganlar</h3>
+      <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseCart">&times;</span>
+    </div>
+    <div id="cartItemsList"></div>
+    <div style="margin-top: 14px; text-align: right; font-size: 15px; font-weight: 700;">
+      Jami hisob: <span id="cartSumDisplay" style="color:var(--gold-primary); font-family:'Orbitron';">0</span> so'm
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL DRAWER -->
+  <div class="bottom-drawer" id="adminDrawer">
+    <div class="drawer-header">
+      <h3 style="color:var(--danger-red);">⚙️ NAT Security Admin Panel</h3>
+      <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseAdmin">&times;</span>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat-item">
+        <div class="admin-stat-val" id="adminOrdersNum">15</div>
+        <div class="admin-stat-lbl">Buyurtmalar</div>
+      </div>
+      <div class="admin-stat-item">
+        <div class="admin-stat-val">12 ta</div>
+        <div class="admin-stat-lbl">SKUD & Kameralar</div>
+      </div>
+      <div class="admin-stat-item">
+        <div class="admin-stat-val" style="color:var(--accent-green);">Faol</div>
+        <div class="admin-stat-lbl">Buxoro</div>
+      </div>
+    </div>
+
+    <h4 style="font-size:12px; color:var(--text-main); margin-bottom:8px; font-weight:800;">So'nggi Tushgan Zayavkalar</h4>
+    <div>
+      <div class="order-card-admin">
+        <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+          <b>#1028 • Buxoro Neft Baza</b>
+          <span style="color:var(--accent-green); font-weight:700;">Yangi</span>
+        </div>
+        <div style="color:var(--text-muted); font-size:11px;">Tripod Turniket + Face ID SKUD terminali</div>
+        <div style="margin-top:3px; font-weight:700; color:var(--gold-primary);">6 800 000 so'm • Buxoro</div>
+      </div>
+      <div class="order-card-admin">
+        <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+          <b>#1027 • Jamshid Q.</b>
+          <span style="color:#d97706; font-weight:700;">Kalkulyator</span>
+        </div>
+        <div style="color:var(--text-muted); font-size:11px;">Hovli komplekt: 4 ta ColorVu + 2TB HDD</div>
+        <div style="margin-top:3px; font-weight:700; color:var(--gold-primary);">3 130 000 so'm • Vobkent</div>
+      </div>
+    </div>
+
+    <button class="btn-buy" style="margin-top:10px; border-color:var(--danger-red); color:var(--danger-red);" onclick="alert('Yangi mahsulot yoki narx tahrirlash moduli')">
+      + Yangi Mahsulot / SKUD Qo'shish
+    </button>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.setHeaderColor('#ffffff');
+      tg.setBackgroundColor('#f8fafc');
+    }
+
+    // TO'LIQ MAHSULOTLAR RO'YXATI (KAMERALAR, SKUD, TURNIKET, QULFLAR)
+    const itemsData = [
+      // SKUD VA TURNIKETLAR
+      {
+        id: 1,
+        type: 'product',
+        filter: 'skud',
+        tag: 'SKUD & BIOMETRIYA',
+        name: 'Hikvision Face ID & RFID Terminal',
+        specs: 'Yuzni 0.2 soniyada tanish, niqob va harorat nazorati, 3000 foydalanuvchi bazasi',
+        price: 2100000,
+        icon: '👤'
+      },
+      {
+        id: 2,
+        type: 'product',
+        filter: 'skud',
+        tag: 'SMART LOCK',
+        name: 'Smart Biometrik Qulf (Eshik uchun)',
+        specs: 'Barmoq izi, RFID karta, PIN-kod, mexanik kalit va Tuya Wi-Fi ilovasi',
+        price: 1350000,
+        icon: '🔐'
+      },
+      {
+        id: 3,
+        type: 'product',
+        filter: 'turniket',
+        tag: 'KIRISH NAZORATI',
+        name: 'ZKTeco Tripod Turniket Tizimi',
+        specs: 'Zanglamas po\'lat korpus, anti-panika funksiyasi, kartani o\'qish va hisobot',
+        price: 5200000,
+        icon: '🚧'
+      },
+      {
+        id: 4,
+        type: 'product',
+        filter: 'turniket',
+        tag: 'AVTOMATIKA',
+        name: 'Avtomatik Shlagbaum (4 metr)',
+        specs: 'Pult bilan boshqarish, fotodatchiklar, to\'qnashuvdan himoya, 24/7 rejim',
+        price: 4900000,
+        icon: '🛑'
+      },
+      // KAMERALAR
+      {
+        id: 5,
+        type: 'product',
+        filter: 'colorvu',
+        tag: 'COLORVU 24/7',
+        name: 'Hikvision 4MP ColorVu IP Kamera',
+        specs: 'Zulmatda ham to\'liq rangli tasvir (F1.0), audio mikrofon, IP67 metall',
+        price: 620000,
+        icon: '🌈'
+      },
+      {
+        id: 6,
+        type: 'product',
+        filter: 'outdoor',
+        tag: 'TASHQI KO\'CHA',
+        name: 'Hikvision 4MP Bullet Tashqi Kamera',
+        specs: '40 metr tungi ko\'rish, qor va yomg\'irga 100% chidamli, WDR 120dB',
+        price: 540000,
+        icon: '📹'
+      },
+      {
+        id: 7,
+        type: 'product',
+        filter: 'indoor',
+        tag: 'ICHKI OFIS/UY',
+        name: 'Dahua Dome Ichki Kamera (Gumbaz)',
+        specs: 'Keng burchakli 2.8mm linza, shiftdan estetik montaj, mikrofon',
+        price: 430000,
+        icon: '📷'
+      },
+      {
+        id: 8,
+        type: 'product',
+        filter: 'ptz',
+        tag: 'PTZ 360°',
+        name: 'Wi-Fi PTZ 360° Smart Kamera',
+        specs: 'Telefonda harakatlantirish, odamni avtomatik ta\'qib qilish, sirena',
+        price: 490000,
+        icon: '🔄'
+      },
+      // TAYYOR KOMPLEKTLAR
+      {
+        id: 9,
+        type: 'product',
+        filter: 'kits',
+        tag: 'TAYYOR YECHIM',
+        name: '4 Kamerali Hovli Komplekti',
+        specs: '4 ta IP kamera + NVR registrator + 1TB xotira + kabellar + montajga tayyor',
+        price: 2650000,
+        icon: '📦'
+      },
+      {
+        id: 10,
+        type: 'product',
+        filter: 'kits',
+        tag: 'KORXONA YECHIMI',
+        name: '8 Kamerali Do\'kon/Ombor Komplekti',
+        specs: '8 ta 4MP kamera + 8ch NVR + 2TB HDD + blok pitaniya + konnektorlar',
+        price: 4800000,
+        icon: '🏢'
+      }
+    ];
+
+    // SERVIS VA MONTAJ XIZMATLARI
+    const servicesData = [
+      {
+        id: 101,
+        type: 'service',
+        filter: 'services',
+        tag: 'BEPUL SERVIS',
+        name: 'Obyektni Bepul Ko\'rikdan O\'tkazish',
+        specs: 'Muhandis Buxoro shahar va viloyatiga borib, kameralar o\'rnini belgilaydi va smeta tuzadi',
+        price: 0,
+        icon: '📐'
+      },
+      {
+        id: 102,
+        type: 'service',
+        filter: 'services',
+        tag: 'MONTAJ',
+        name: 'Kamera O\'rnatish va Sozlash (1 nuqta)',
+        specs: 'Kabel tortish, kamerani mahkamlash, NVR ga ulash va fokusni to\'g\'rilash',
+        price: 120000,
+        icon: '🛠️'
+      },
+      {
+        id: 103,
+        type: 'service',
+        filter: 'services',
+        tag: 'SKUD O\'RNATISH',
+        name: 'Turniket va SKUD Tizimini O\'rnatish',
+        specs: 'Turniketni anker bilan qotirish, kontrollyer va dasturiy ta\'minotni sozlash',
+        price: 450000,
+        icon: '⚙️'
+      },
+      {
+        id: 104,
+        type: 'service',
+        filter: 'services',
+        tag: 'ONLAYN MONITORING',
+        name: 'Mobil Telefonga Sozlash (Onlayn)',
+        specs: 'Dunyoning istalgan nuqtasidan turib smartfonda jonli kuzatuvni sozlab berish',
+        price: 80000,
+        icon: '📱'
+      }
+    ];
+
+    let currentMainTab = 'catalog'; // 'catalog', 'calc', 'services'
+    let currentFilter = 'all';
+    const cart = {};
+
+    function formatPrice(num) {
+      if (num === 0) return 'Bepul';
+      return num.toLocaleString('uz-UZ');
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = '';
+
+      if (currentMainTab === 'catalog') {
+        const list = currentFilter === 'all' 
+          ? itemsData 
+          : itemsData.filter(i => i.filter === currentFilter);
+
+        list.forEach(p => {
+          const q = cart[p.id] || 0;
+          const card = document.createElement('div');
+          card.className = 'item-card';
+          card.innerHTML = `
+            <div>
+              <div class="item-icon">${p.icon}</div>
+              <div class="item-tag">${p.tag}</div>
+              <div class="item-title">${p.name}</div>
+              <div class="item-desc">${p.specs}</div>
+            </div>
+            <div>
+              <div class="item-price">${formatPrice(p.price)} so'm</div>
+              <button class="btn-buy" id="btnBuy_${p.id}" style="display: ${q > 0 ? 'none' : 'block'}" onclick="addToCart(${p.id})">
+                Savatchaga +
+              </button>
+              <div class="qty-box" id="qtyBox_${p.id}" style="display: ${q > 0 ? 'flex' : 'none'}">
+                <button class="qty-btn" onclick="changeQty(${p.id}, -1)">-</button>
+                <span class="qty-count">${q}</span>
+                <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } else if (currentMainTab === 'services') {
+        servicesData.forEach(s => {
+          const q = cart[s.id] || 0;
+          const row = document.createElement('div');
+          row.className = 'item-card row-card';
+          row.innerHTML = `
+            <div class="item-icon">${s.icon}</div>
+            <div style="flex:1;">
+              <div class="item-tag" style="color:var(--accent-green);">${s.tag}</div>
+              <div class="item-title" style="min-height:auto;">${s.name}</div>
+              <div class="item-desc">${s.specs}</div>
+              <div class="item-price">${formatPrice(s.price)} ${s.price > 0 ? "so'm" : ""}</div>
+            </div>
+            <div style="min-width: 95px;">
+              <button class="btn-buy" id="btnBuy_${s.id}" style="display: ${q > 0 ? 'none' : 'block'}" onclick="addToCart(${s.id})">
+                Tanlash +
+              </button>
+              <div class="qty-box" id="qtyBox_${s.id}" style="display: ${q > 0 ? 'flex' : 'none'}">
+                <button class="qty-btn" onclick="changeQty(${s.id}, -1)">-</button>
+                <span class="qty-count">${q}</span>
+                <button class="qty-btn" onclick="changeQty(${s.id}, 1)">+</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(row);
+        });
+      }
+    }
+
+    function addToCart(id) {
+      cart[id] = 1;
+      updateState();
+      vibrate();
+    }
+
+    function changeQty(id, delta) {
+      cart[id] = (cart[id] || 0) + delta;
+      if (cart[id] <= 0) delete cart[id];
+      updateState();
+      vibrate();
+    }
+
+    function vibrate() {
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+    }
+
+    function updateState() {
+      renderCatalog();
+
+      const all = [...itemsData, ...servicesData];
+      let totalCount = 0;
+      let totalPrice = 0;
+
+      for (const [id, count] of Object.entries(cart)) {
+        let item = all.find(x => x.id === parseInt(id));
+        // Kalkulyatordan kelgan maxsus komplekt
+        if (!item && id.toString().startsWith('999')) {
+          item = window.currentCalculatedKit;
+        }
+        if (item) {
+          totalCount += count;
+          totalPrice += item.price * count;
+        }
+      }
+
+      document.getElementById('cartCountBadge').textContent = totalCount;
+      document.getElementById('cartSumDisplay').textContent = formatPrice(totalPrice);
+
+      if (tg?.MainButton) {
+        if (totalCount > 0) {
+          tg.MainButton.setText(`BUYURTMANI YUBORISH (${totalCount}) • ${formatPrice(totalPrice)} SO'M`);
+          tg.MainButton.color = '#b48512';
+          tg.MainButton.textColor = '#ffffff';
+          tg.MainButton.show();
+        } else {
+          tg.MainButton.hide();
+        }
+      }
+
+      renderCartEntries(all);
+    }
+
+    function renderCartEntries(all) {
+      const container = document.getElementById('cartItemsList');
+      container.innerHTML = '';
+      const entries = Object.entries(cart);
+
+      if (entries.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:18px 0;">Savatcha hozircha bo\'sh</p>';
+        return;
+      }
+
+      entries.forEach(([id, q]) => {
+        let item = all.find(x => x.id === parseInt(id));
+        if (!item && id.toString().startsWith('999')) {
+          item = window.currentCalculatedKit;
+        }
+        if (!item) return;
+
+        const row = document.createElement('div');
+        row.className = 'cart-entry';
+        row.innerHTML = `
+          <div>
+            <b>${item.name}</b>
+            <div style="font-size:11px; color:var(--text-muted);">${formatPrice(item.price)} so'm &times; ${q}</div>
+          </div>
+          <div style="font-weight:700; color:var(--gold-primary); font-family:'Orbitron';">
+            ${formatPrice(item.price * q)} so'm
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // ==========================================
+    // SMETA KALKULYATORI MANTIQIY HISOBI
+    // ==========================================
+    const calcState = {
+      object: 'hovli',
+      qty: 4,
+      quality: 'colorvu',
+      hdd: 30
+    };
+
+    function selectCalcOption(elem, step, value) {
+      document.querySelectorAll(`[data-step="${step}"]`).forEach(el => el.classList.remove('selected'));
+      elem.classList.add('selected');
+      calcState[step] = value;
+      computeEstimate();
+      vibrate();
+    }
+
+    function computeEstimate() {
+      const cameraUnitPrice = calcState.quality === 'colorvu' ? 620000 : 490000;
+      const nvrCost = calcState.qty <= 4 ? 650000 : (calcState.qty <= 8 ? 1100000 : 1900000);
+      const equipCost = (cameraUnitPrice * calcState.qty) + nvrCost;
+
+      const hddCost = calcState.hdd === 10 ? 380000 : 550000;
+      const workCost = calcState.qty * 120000; // Har bir nuqta montaji 120 000 so'm
+
+      const total = equipCost + hddCost + workCost;
+
+      document.getElementById('calcEquipCost').textContent = formatPrice(equipCost) + " so'm";
+      document.getElementById('calcHddCost').textContent = formatPrice(hddCost) + " so'm";
+      document.getElementById('calcWorkCost').textContent = formatPrice(workCost) + " so'm";
+      document.getElementById('calcFinalSum').textContent = formatPrice(total) + " so'm";
+
+      window.currentCalculatedKit = {
+        id: 9991,
+        name: `Smeta Komplekt: ${calcState.qty} ta Kamera (${calcState.quality.toUpperCase()}) + Montaj`,
+        price: total,
+        specs: `${calcState.object.toUpperCase()} uchun: ${calcState.qty} ta kamera, ${calcState.hdd} kunlik HDD, kabellar va o'rnatish`
+      };
+    }
+
+    function addCalculatedKitToCart() {
+      computeEstimate();
+      cart[9991] = 1;
+      updateState();
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      alert("✅ Kalkulyatorda hisoblangan tayyor to'plam savatchaga qo'shildi!");
+    }
+
+    // TELEGRAM MAIN BUTTON BUYURTMANI BOTGA YUBORISH
+    if (tg?.MainButton) {
+      tg.MainButton.onClick(() => {
+        const all = [...itemsData, ...servicesData];
+        const orders = [];
+        let total = 0;
+
+        for (const [id, q] of Object.entries(cart)) {
+          let item = all.find(x => x.id === parseInt(id));
+          if (!item && id.toString().startsWith('999')) item = window.currentCalculatedKit;
+          if (item) {
+            orders.push({ id: item.id, name: item.name, qty: q, price: item.price });
+            total += item.price * q;
+          }
+        }
+
+        if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+        tg.sendData(JSON.stringify({
+          source: 'natsecurity_miniapp_pro',
+          orders: orders,
+          total_sum: total,
+          user: tg.initDataUnsafe?.user
+        }));
+      });
+    }
+
+    // ASOSIY 3 TA TAB (KATALOG, KALKULYATOR, XIZMATLAR)
+    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMainTab = btn.dataset.tab;
+
+        const chipScroll = document.getElementById('chipScroll');
+        const catalogGrid = document.getElementById('catalogGrid');
+        const calcPanel = document.getElementById('calculatorPanel');
+
+        if (currentMainTab === 'calc') {
+          chipScroll.style.display = 'none';
+          catalogGrid.style.display = 'none';
+          calcPanel.style.display = 'block';
+          computeEstimate();
+        } else {
+          calcPanel.style.display = 'none';
+          catalogGrid.style.display = 'grid';
+          if (currentMainTab === 'services') {
+            chipScroll.style.display = 'none';
+          } else {
+            chipScroll.style.display = 'flex';
+          }
+          renderCatalog();
+        }
+      });
+    });
+
+    // FILTER CHIPLARI
+    document.querySelectorAll('.chip-btn').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.dataset.filter;
+        renderCatalog();
+      });
+    });
+
+    // MODAL DRAWERLAR
+    const overlay = document.getElementById('drawerOverlay');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const adminDrawer = document.getElementById('adminDrawer');
+
+    document.getElementById('btnOpenCart').addEventListener('click', () => {
+      cartDrawer.classList.add('open');
+      overlay.classList.add('active');
+    });
+
+    document.getElementById('btnOpenAdmin').addEventListener('click', () => {
+      adminDrawer.classList.add('open');
+      overlay.classList.add('active');
+    });
+
+    function closeAllDrawers() {
+      cartDrawer.classList.remove('open');
+      adminDrawer.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+
+    document.getElementById('btnCloseCart').addEventListener('click', closeAllDrawers);
+    document.getElementById('btnCloseAdmin').addEventListener('click', closeAllDrawers);
+    overlay.addEventListener('click', closeAllDrawers);
+
+    // Boshlang'ich yuklash
+    renderCatalog();
+    computeEstimate();
+  </script>
+</body>
+</html>
