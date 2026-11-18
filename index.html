@@ -1022,10 +1022,141 @@ id="cartDrawer">
 
     <!-- ADMIN SUB-TABS -->
     <div class="admin-nav-bar">
-      <div class="admin-nav-item active" id="admTabAdd" onclick="switchAdminSubTab('add')">+ Tovar Qo'shish</div>
-      <div class="admin-nav-item" id="admTabList" onclick="switchAdminSubTab('list')">📦 Tovarlar</div>
-      <div class="admin-nav-item" id="admTabOrders" onclick="switchAdminSubTab('orders')">📋 Buyurtmalar</div>
+      <div class="admin-nav-item active" id="admTabAnalytics" onclick="switchAdminSubTab('analytics')">📊 Analitika & CRM</div>
       <div class="admin-nav-item" id="admTabUsers" onclick="switchAdminSubTab('users')">👥 Mijozlar</div>
+      <div class="admin-nav-item" id="admTabOrders" onclick="switchAdminSubTab('orders')">📋 Buyurtmalar</div>
+      <div class="admin-nav-item" id="admTabAdd" onclick="switchAdminSubTab('add')">+ Tovar Qo'shish</div>
+      <div class="admin-nav-item" id="admTabList" onclick="switchAdminSubTab('list')">📦 Tovarlar</div>
+    </div>
+
+    
+    <!-- BO'LIM 0: VIZUAL ANALITIKA VA DASHBOARD -->
+    <div id="admSectionAnalytics">
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:16px;">
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:10px; text-align:center;">
+          <div style="font-size:10px; color:#166534; font-weight:700;">JAMI SAVDO</div>
+          <div style="font-size:16px; font-weight:800; color:#15803d; margin-top:3px;" id="statTotalRevenue">23 850 000</div>
+          <div style="font-size:9px; color:#166534;">so'm / joriy oy</div>
+        </div>
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:10px; text-align:center;">
+          <div style="font-size:10px; color:#1e40af; font-weight:700;">BUYURTMALAR</div>
+          <div style="font-size:16px; font-weight:800; color:#1d4ed8; margin-top:3px;" id="statOrdersCount">18 ta</div>
+          <div style="font-size:9px; color:#1e40af;">94% ijobiy konversiya</div>
+        </div>
+        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:12px; padding:10px; text-align:center;">
+          <div style="font-size:10px; color:#854d0e; font-weight:700;">YANGI MIJOZLAR</div>
+          <div style="font-size:16px; font-weight:800; color:#a16207; margin-top:3px;" id="statClientsCount">42 ta</div>
+          <div style="font-size:9px; color:#854d0e;">Buxoro & viloyat</div>
+        </div>
+        <div style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:12px; padding:10px; text-align:center;">
+          <div style="font-size:10px; color:#6b21a8; font-weight:700;">MONTAJ / OBYEKT</div>
+          <div style="font-size:16px; font-weight:800; color:#7e22ce; margin-top:3px;">12 ta</div>
+          <div style="font-size:9px; color:#6b21a8;">Faol obyektlar</div>
+        </div>
+      </div>
+
+      <!-- DIAGRAMMA 1: MIJOZLAR TALABI & TOIFALARI (BAR CHART) -->
+      <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <b style="font-size:12px; color:var(--text-main);">📈 Tizimlar bo'yicha Talab Grafigi:</b>
+          <span style="font-size:10px; color:var(--text-muted);">Real vaqt tahlili</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px;">
+              <span>📹 Tashqi & ColorVu Videokuzatuv</span>
+              <b>52% (22 ta)</b>
+            </div>
+            <div style="background:#f1f5f9; height:8px; border-radius:4px; overflow:hidden;">
+              <div style="background:var(--gold-primary); width:52%; height:100%;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px;">
+              <span>🚪 SKUD & Face ID Biometriya</span>
+              <b>26% (11 ta)</b>
+            </div>
+            <div style="background:#f1f5f9; height:8px; border-radius:4px; overflow:hidden;">
+              <div style="background:#3b82f6; width:26%; height:100%;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px;">
+              <span>🚧 Turniket & Avtomatik Shlagbaum</span>
+              <b>14% (6 ta)</b>
+            </div>
+            <div style="background:#f1f5f9; height:8px; border-radius:4px; overflow:hidden;">
+              <div style="background:#8b5cf6; width:14%; height:100%;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px;">
+              <span>🛠️ Obyekt Ko'rigi & Texnik Servis</span>
+              <b>8% (3 ta)</b>
+            </div>
+            <div style="background:#f1f5f9; height:8px; border-radius:4px; overflow:hidden;">
+              <div style="background:#10b981; width:8%; height:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAGRAMMA 2: VILOYAT HUDUDLARI & VORONKA (CRM BOSQICHLARI) -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-bottom:14px;">
+        <!-- VORONKA -->
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:12px;">
+          <b style="font-size:12px; color:var(--text-main); display:block; margin-bottom:8px;">🎯 CRM Voronkasi (5 Bosqich):</b>
+          <div style="display:flex; flex-direction:column; gap:5px; font-size:10px;">
+            <div style="background:#e0f2fe; padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between;">
+              <span>1. Yangi murojaatlar</span>
+              <b>42 ta</b>
+            </div>
+            <div style="background:#fef3c7; padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; margin-left:10px;">
+              <span>2. Aloqaga chiqildi</span>
+              <b>34 ta</b>
+            </div>
+            <div style="background:#ede9fe; padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; margin-left:20px;">
+              <span>3. Ko'rik belgilandi</span>
+              <b>21 ta</b>
+            </div>
+            <div style="background:#ffedd5; padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; margin-left:30px;">
+              <span>4. Montaj jarayonida</span>
+              <b>12 ta</b>
+            </div>
+            <div style="background:#dcfce7; padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; margin-left:40px;">
+              <span>5. Bajarildi & Kafolatda</span>
+              <b>9 ta</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- HUDUDLAR BO'YICHA TAHLIL -->
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:12px;">
+          <b style="font-size:12px; color:var(--text-main); display:block; margin-bottom:8px;">📍 Buxoro Hududiy Taqsimoti:</b>
+          <div style="font-size:11px; display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between; border-bottom:1px dashed #e2e8f0; padding-bottom:3px;">
+              <span>Buxoro shahri</span>
+              <b>58% (Markaz)</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px dashed #e2e8f0; padding-bottom:3px;">
+              <span>G'ijduvon tumani</span>
+              <b>18%</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px dashed #e2e8f0; padding-bottom:3px;">
+              <span>Vobkent tumani</span>
+              <b>12%</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px dashed #e2e8f0; padding-bottom:3px;">
+              <span>Kogon & Jondor</span>
+              <b>12%</b>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="admSectionAdd">
@@ -1822,7 +1953,7 @@ id="cartDrawer">
     document.getElementById('btnOpenAdmin').addEventListener('click', () => {
       adminDrawer.classList.add('open');
       overlay.classList.add('active');
-      switchAdminSubTab('add');
+      switchAdminSubTab('analytics');
     });
 
     
