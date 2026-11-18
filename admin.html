@@ -844,7 +844,126 @@
       }
     ];
 
-    let productsData = JSON.parse(localStorage.getItem('nat_products')) || [];
+    
+    const defaultCatalog = [
+      {
+        id: 1,
+        type: 'product',
+        filter: 'skud',
+        tag: 'SKUD & BIOMETRIYA',
+        name: 'Hikvision Face ID & RFID Terminal',
+        specs: 'Yuzni 0.2 soniyada tanish, niqob va harorat nazorati, 3000 foydalanuvchi bazasi',
+        price: 2100000,
+        img: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80',
+        icon: '👤'
+      },
+      {
+        id: 2,
+        type: 'product',
+        filter: 'skud',
+        tag: 'SMART LOCK',
+        name: 'Smart Biometrik Qulf (Eshik uchun)',
+        specs: 'Barmoq izi, RFID karta, PIN-kod, mexanik kalit va Tuya Wi-Fi ilovasi',
+        price: 1350000,
+        img: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80',
+        icon: '🔐'
+      },
+      {
+        id: 3,
+        type: 'product',
+        filter: 'turniket',
+        tag: 'KIRISH NAZORATI',
+        name: 'ZKTeco Tripod Turniket Tizimi',
+        specs: 'Zanglamas po\'lat korpus, anti-panika funksiyasi, kartani o\'qish va hisobot',
+        price: 5200000,
+        img: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=600&q=80',
+        icon: '🚧'
+      },
+      {
+        id: 4,
+        type: 'product',
+        filter: 'turniket',
+        tag: 'AVTOMATIKA',
+        name: 'Avtomatik Shlagbaum (4 metr)',
+        specs: 'Pult bilan boshqarish, fotodatchiklar, to\'qnashuvdan himoya, 24/7 rejim',
+        price: 4900000,
+        img: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=600&q=80',
+        icon: '🛑'
+      },
+      {
+        id: 5,
+        type: 'product',
+        filter: 'colorvu',
+        tag: 'COLORVU 24/7',
+        name: 'Hikvision 4MP ColorVu IP Kamera',
+        specs: 'Zulmatda ham to\'liq rangli tasvir (F1.0), audio mikrofon, IP67 metall',
+        price: 620000,
+        img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80',
+        icon: '🌈'
+      },
+      {
+        id: 6,
+        type: 'product',
+        filter: 'outdoor',
+        tag: 'TASHQI KO\'CHA',
+        name: 'Hikvision 4MP Bullet Tashqi Kamera',
+        specs: '40 metr tungi ko\'rish, qor va yomg\'irga 100% chidamli, WDR 120dB',
+        price: 540000,
+        img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80',
+        icon: '📹'
+      },
+      {
+        id: 7,
+        type: 'product',
+        filter: 'indoor',
+        tag: 'ICHKI OFIS/UY',
+        name: 'Dahua Dome Ichki Kamera (Gumbaz)',
+        specs: 'Keng burchakli 2.8mm linza, shiftdan estetik montaj, mikrofon',
+        price: 430000,
+        img: 'https://images.unsplash.com/photo-1528310263467-5231c62f3a6a?auto=format&fit=crop&w=600&q=80',
+        icon: '📷'
+      },
+      {
+        id: 8,
+        type: 'product',
+        filter: 'ptz',
+        tag: 'PTZ 360°',
+        name: 'Wi-Fi PTZ 360° Smart Kamera',
+        specs: 'Telefonda harakatlantirish, odamni avtomatik ta\'qib qilish, sirena',
+        price: 490000,
+        img: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=600&q=80',
+        icon: '🔄'
+      },
+      {
+        id: 9,
+        type: 'product',
+        filter: 'kits',
+        tag: 'TAYYOR YECHIM',
+        name: '4 Kamerali Hovli Komplekti',
+        specs: '4 ta IP kamera + NVR registrator + 1TB xotira + kabellar + montajga tayyor',
+        price: 2650000,
+        img: 'https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=600&q=80',
+        icon: '📦'
+      },
+      {
+        id: 10,
+        type: 'product',
+        filter: 'kits',
+        tag: 'PREMIUM TO\'PLAM',
+        name: '8 Kamerali Biznes / Magazin Komplekti',
+        specs: '8 ta ColorVu kamera + 8ch NVR + 2TB xotira + Smart PoE switch',
+        price: 4850000,
+        img: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
+        icon: '🏢'
+      }
+    ];
+
+    let productsData = JSON.parse(localStorage.getItem('nat_products'));
+    if (!productsData || productsData.length === 0) {
+      productsData = defaultCatalog;
+      localStorage.setItem('nat_products', JSON.stringify(defaultCatalog));
+    }
+
     let ordersData = JSON.parse(localStorage.getItem('nat_orders')) || [
       {
         id: 8812,
@@ -890,7 +1009,7 @@
     }
 
     // 1. SWITCH VIEW (TABS)
-    function switchView(viewName) {
+    window.switchView = function(viewName) {
       // Toggle sidebar active
       document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
       const activeItem = document.getElementById('menu-' + viewName);
