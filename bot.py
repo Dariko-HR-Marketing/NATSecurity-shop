@@ -6,22 +6,22 @@ import os
 
 BOT_TOKEN = "8884858490:AAHl3OQN3rEjX1_hnJEKqTkC0tu9ybY5qOs"
 WEBAPP_URL = "https://dariko-hr-marketing.github.io/NATSecurity-shop/"
-ADMIN_CHAT_ID = 944857221  # Sizning Telegram ID'ingiz
+ADMIN_CHAT_ID = 944857221  # NAT Security Admin
 
 USERS_DB_FILE = os.path.join(os.path.dirname(__file__), "users_db.json")
 
-def load_users():
+def load_db():
     if os.path.exists(USERS_DB_FILE):
         try:
             with open(USERS_DB_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except:
-            return {}
-    return {}
+        except Exception:
+            return {"users": {}, "orders": []}
+    return {"users": {}, "orders": []}
 
-def save_users(users):
+def save_db(db):
     with open(USERS_DB_FILE, "w", encoding="utf-8") as f:
-        json.dump(users, f, ensure_ascii=False, indent=2)
+        json.dump(db, f, ensure_ascii=False, indent=2)
 
 def send_telegram_message(chat_id, text, reply_markup=None):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
@@ -32,157 +32,148 @@ def send_telegram_message(chat_id, text, reply_markup=None):
     }
     if reply_markup:
         payload["reply_markup"] = reply_markup
-    data = json.dumps(payload).encode('utf-8')
-    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+    
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            return json.loads(resp.read().decode('utf-8'))
+        with urllib.request.urlopen(req, timeout=10) as response:
+            return json.loads(response.read().decode())
     except Exception as e:
-        print(f"Xabar yuborishda xatolik ({chat_id}):", e)
+        print(f"Xabar yuborishda xatolik: {e}")
         return None
 
-def main():
-    print("==================================================")
-    print("🛡️ NAT Security Bot (@NATSecurity_bot) ishga tushdi!")
-    print("Ro'yxatdan o'tish va buyurtmalar kuzatilmoqda...")
-    print("==================================================")
-    
-    users = load_users()
+def handle_updates():
     offset = 0
+    print("NAT Security 5-Bosqichli Professional CRM Bot ishga tushdi...")
+    db = load_db()
 
     while True:
         try:
             url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates?offset={offset}&timeout=20"
             req = urllib.request.Request(url)
-            with urllib.request.urlopen(req, timeout=25) as resp:
-                updates = json.loads(resp.read().decode('utf-8'))
+            with urllib.request.urlopen(req, timeout=25) as response:
+                result = json.loads(response.read().decode())
+                updates = result.get("result", [])
 
-            for u in updates.get("result", []):
-                offset = u["update_id"] + 1
-                msg = u.get("message")
-                if not msg:
-                    continue
+                for update in updates:
+                    offset = update["update_id"] + 1
 
-                chat_id = msg.get("chat", {}).get("id")
-                from_user = msg.get("from", {})
-                first_name = from_user.get("first_name", "Foydalanuvchi")
-                last_name = from_user.get("last_name", "")
-                username = from_user.get("username", "")
-                user_key = str(chat_id)
+                    if "message" in update:
+                        msg = update["message"]
+                        chat_id = msg["chat"]["id"]
+                        user_info = msg.get("from", {})
+                        first_name = user_info.get("first_name", "Mijoz")
+                        username = user_info.get("username", "")
 
-                # 1. Kontakt yuborilganda (Registratsiya yakunlanishi)
-                if "contact" in msg:
-                    contact = msg["contact"]
-                    phone_number = contact.get("phone_number", "")
-                    
-                    users[user_key] = {
-                        "chat_id": chat_id,
-                        "first_name": first_name,
-                        "last_name": last_name,
-                        "username": username,
-                        "phone": phone_number,
-                        "registered_at": time.strftime("%Y-%m-%d %H:%M:%S")
-                    }
-                    save_users(users)
+                        # Kontakt yuborilganda (1-Bosqich: Asosiy shaxsiy identifikatsiya)
+                        if "contact" in msg:
+                            contact = msg["contact"]
+                            phone = contact.get("phone_number", "")
+                            c_name = f"{contact.get('first_name', '')} {contact.get('last_name', '')}".strip()
+                            
+                            uid = str(chat_id)
+                            if uid not in db["users"]:
+                                db["users"][uid] = {
+                                    "user_id": chat_id,
+                                    "full_name": c_name or first_name,
+                                    "username": f"@{username}" if username else "Mavjud emas",
+                                    "phone": phone,
+                                    "client_type": "Jismoniy shaxs",
+                                    "location": "Buxoro",
+                                    "address": "Aniqlanmoqda",
+                                    "object_type": "Xususiy xonadon / Obyekt",
+                                    "interest": "Videokuzatuv & Xavfsizlik",
+                                    "crm_status": "Yangi",
+                                    "created_at": time.strftime("%Y-%m-%d %H:%M:%S")
+                                }
+                            else:
+                                db["users"][uid]["phone"] = phone
+                                db["users"][uid]["full_name"] = c_name or first_name
 
-                    # Adminga yangi ro'yxatdan o'tgan mijoz haqida xabar
-                    admin_alert = (
-                        "👤 <b>YANGI MIJOZ RO'YXATDAN O'TDI!</b>\n\n"
-                        f"• <b>Ism:</b> {first_name} {last_name}\n"
-                        f"• <b>Telefon:</b> <code>{phone_number}</code>\n"
-                        f"• <b>Username:</b> @{username or 'yo\'q'}\n"
-                        f"• <b>ID:</b> <code>{chat_id}</code>"
-                    )
-                    if ADMIN_CHAT_ID and ADMIN_CHAT_ID != chat_id:
-                        send_telegram_message(ADMIN_CHAT_ID, admin_alert)
+                            save_db(db)
 
-                    # Mijozga do'kon tugmasi
-                    kb = {
-                        "inline_keyboard": [
-                            [
-                                {"text": "🛡️ Do'kon & Smeta (Mini App)", "web_app": {"url": WEBAPP_URL}}
-                            ]
-                        ]
-                    }
-                    send_telegram_message(
-                        chat_id,
-                        f"✅ <b>Rahmat, {first_name}!</b>\n"
-                        "Siz muvaffaqiyatli ro'yxatdan o'tdingiz.\n\n"
-                        "Quyidagi tugma orqali katalog va kalkulyatordan foydalanishingiz mumkin:",
-                        kb
-                    )
-                    continue
+                            # Adminga CRM xabari
+                            admin_notify = (
+                                f"👤 <b>YANGI MIJOZ RO'YXATDAN O'TDI! (CRM)</b>\n\n"
+                                f"▫️ <b>F.I.O:</b> {db['users'][uid]['full_name']}\n"
+                                f"▫️ <b>Telefon:</b> {phone}\n"
+                                f"▫️ <b>Telegram:</b> @{username} (ID: {chat_id})\n"
+                                f"▫️ <b>CRM Holati:</b> 🟢 Yangi\n"
+                                f"▫️ <b>Sana:</b> {db['users'][uid]['created_at']}"
+                            )
+                            send_telegram_message(ADMIN_CHAT_ID, admin_notify)
 
-                # 2. Mini App'dan buyurtma kelganda
-                if "web_app_data" in msg:
-                    raw_data = msg["web_app_data"].get("data", "{}")
-                    try:
-                        order_info = json.loads(raw_data)
-                        orders = order_info.get("orders", [])
-                        total_sum = order_info.get("total_sum", 0)
+                            # Mijozga minnatdorchilik va Mini App tugmasi
+                            reply_kb = {
+                                "keyboard": [
+                                    [{"text": "🛡️ NAT Security Do'koni & Kalkulyator", "web_app": {"url": WEBAPP_URL}}],
+                                    [{"text": "📍 Obyekt manzilini yuborish (GPS)", "request_location": True}],
+                                    [{"text": "📞 Mutaxassis bilan bog'lanish"}]
+                                ],
+                                "resize_keyboard": True
+                            }
+                            send_telegram_message(
+                                chat_id,
+                                f"✅ Rahmat, <b>{first_name}</b>! Ma'lumotlaringiz NAT Security tizimida muvaffaqiyatli ro'yxatga olindi.\n\n"
+                                f"Pastdagi tugma orqali katalogimizdan kameralar, turniketlar va smart qulflarni ko'rishingiz hamda hisob-kitob qilishingiz mumkin:",
+                                reply_kb
+                            )
 
-                        items_text = ""
-                        for idx, it in enumerate(orders, 1):
-                            items_text += f"{idx}. <b>{it.get('name')}</b> — {it.get('qty')} ta ({it.get('price', 0):,} so'm)\n"
+                        # Lokatsiya yuborilganda (2-Bosqich: Obyekt geolokatsiyasi)
+                        elif "location" in msg:
+                            loc = msg["location"]
+                            lat, lon = loc["latitude"], loc["longitude"]
+                            uid = str(chat_id)
+                            if uid in db["users"]:
+                                db["users"][uid]["geo"] = {"lat": lat, "lon": lon}
+                                db["users"][uid]["crm_status"] = "Ko'rik belgilandi"
+                                save_db(db)
 
-                        client_msg = (
-                            "✅ <b>Buyurtmangiz muvaffaqiyatli qabul qilindi!</b>\n\n"
-                            f"📋 <b>Tanlangan tovarlar va xizmatlar:</b>\n{items_text}\n"
-                            f"💰 <b>Jami summa:</b> <b>{total_sum:,} so'm</b>\n\n"
-                            "📍 <b>Xizmat hududi:</b> Buxoro shahar va viloyati\n"
-                            "📞 Tez orada mutaxassisimiz siz bilan bog'lanadi: <b>+998 91 410-99-69</b>"
-                        )
-                        send_telegram_message(chat_id, client_msg)
+                            admin_loc_notify = (
+                                f"📍 <b>OBYEKT LOKATSIYASI KELIB TUSHDI!</b>\n\n"
+                                f"▫️ <b>Mijoz:</b> {first_name} (@{username})\n"
+                                f"▫️ <b>Koordinatalar:</b> {lat}, {lon}\n"
+                                f"▫️ <a href='https://maps.google.com/?q={lat},{lon}'>Google Maps xaritasida ochish</a>"
+                            )
+                            send_telegram_message(ADMIN_CHAT_ID, admin_loc_notify)
+                            send_telegram_message(chat_id, "📍 Obyektingiz geolokatsiyasi qabul qilindi. Mutaxassislarimiz borish joyini xaritada belgiladi!")
 
-                        admin_msg = (
-                            "🚨 <b>YANGI BUYURTMA KELIB TUSHDI!</b>\n\n"
-                            f"👤 <b>Mijoz:</b> {first_name} (@{username or 'nomaʼlum'})\n"
-                            f"🆔 <b>Chat ID:</b> <code>{chat_id}</code>\n\n"
-                            f"📦 <b>Buyurtma ro'yxati:</b>\n{items_text}\n"
-                            f"💵 <b>Umumiy summa:</b> <b>{total_sum:,} so'm</b>"
-                        )
-                        if ADMIN_CHAT_ID and ADMIN_CHAT_ID != chat_id:
-                            send_telegram_message(ADMIN_CHAT_ID, admin_msg)
+                        # /start komandasi
+                        elif "text" in msg:
+                            text = msg["text"]
+                            if text == "/start":
+                                kb = {
+                                    "keyboard": [
+                                        [{"text": "📲 Telefon raqamimni yuborish (Ro'yxatdan o'tish)", "request_contact": True}],
+                                        [{"text": "🛡️ NAT Security Do'koni (Mini App)", "web_app": {"url": WEBAPP_URL}}],
+                                        [{"text": "📍 Obyekt manzilini yuborish", "request_location": True}]
+                                    ],
+                                    "resize_keyboard": True
+                                }
+                                welcome_text = (
+                                    f"Assalomu alaykum, <b>{first_name}</b>!\n\n"
+                                    f"<b>NAT Security</b> — Buxorodagi professional xavfsizlik va videokuzatuv tizimlari markaziga xush kelibsiz!\n\n"
+                                    f"🏢 <b>Bizning xizmatlar:</b>\n"
+                                    f"• Hikvision, Dahua 4K & ColorVu kameralari\n"
+                                    f"• SKUD Face ID va Smart biometrik qulflar\n"
+                                    f"• Turniketlar va avtomatik shlagbaumlar\n"
+                                    f"• Bepul loyihalash, smeta va 1 yillik kafolat\n\n"
+                                    f"<i>Buyurtma va hisob-kitoblar uchun pastdagi tugma orqali telefon raqamingizni yuboring:</i>"
+                                )
+                                send_telegram_message(chat_id, welcome_text, kb)
 
-                    except Exception as err:
-                        print("Buyurtmani o'qishda xatolik:", err)
-
-                # 3. /start bosilganda
-                elif msg.get("text") == "/start":
-                    # Agar avval ro'yxatdan o'tmagan bo'lsa - raqamini so'raymiz
-                    if user_key not in users:
-                        reg_keyboard = {
-                            "keyboard": [
-                                [
-                                    {"text": "📱 Telefon raqamimni ulashish", "request_contact": True}
-                                ]
-                            ],
-                            "resize_keyboard": True,
-                            "one_time_keyboard": True
-                        }
-                        welcome_reg = (
-                            f"Assalomu alaykum, <b>{first_name}</b>!\n\n"
-                            "<b>NAT Security</b> professional xavfsizlik do'koniga xush kelibsiz.\n"
-                            "Xizmatlardan to'liq foydalanish va buyurtmalarni rasmiylashtirish uchun, iltimos, quyidagi tugmani bosib <b>telefon raqamingizni tasdiqlang:</b>"
-                        )
-                        send_telegram_message(chat_id, welcome_reg, reg_keyboard)
-                    else:
-                        # Ro'yxatdan o'tgan bo'lsa - darhol do'konni ochish tugmasi
-                        inline_kb = {
-                            "inline_keyboard": [
-                                [
-                                    {"text": "🛡️ Do'kon & Smeta (Mini App)", "web_app": {"url": WEBAPP_URL}}
-                                ]
-                            ]
-                        }
-                        welcome_back = (
-                            f"Qaytganingizdan xursandmiz, <b>{first_name}</b>!\n\n"
-                            "Do'kon, SKUD tizimlari va kalkulyatordan foydalanish uchun pastdagi tugmani bosing:"
-                        )
-                        send_telegram_message(chat_id, welcome_back, inline_kb)
+                            elif text == "📞 Mutaxassis bilan bog'lanish":
+                                send_telegram_message(
+                                    chat_id,
+                                    "📞 <b>NAT Security Aloqa Markazi:</b>\n\n"
+                                    "📱 Telefon: <b>+998 91 410-99-69</b>\n"
+                                    "📍 Manzil: Buxoro shahri\n"
+                                    "🌐 Sayt: natsecurity.uz\n\n"
+                                    "Har kuni 09:00 dan 20:00 gacha xizmatingizdamiz!"
+                                )
 
         except Exception as e:
-            time.sleep(2)
+            time.sleep(3)
 
 if __name__ == "__main__":
-    main()
+    handle_updates()

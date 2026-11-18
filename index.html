@@ -664,6 +664,84 @@
       margin-bottom: 8px;
       font-size: 12px;
     }
+  
+    /* DESKTOP & WIDE SCREEN ADAPTATION */
+    @media (min-width: 768px) {
+      body {
+        background: #f1f5f9;
+        display: flex;
+        justify-content: center;
+      }
+      .app-wrapper {
+        max-width: 880px;
+        width: 100%;
+        background: #ffffff;
+        min-height: 100vh;
+        box-shadow: 0 0 35px rgba(0,0,0,0.06);
+      }
+      .catalog-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+      .bottom-drawer {
+        left: 50% !important;
+        transform: translate(-50%, 100%) !important;
+        max-width: 780px !important;
+        border-radius: 20px 20px 0 0 !important;
+      }
+      .bottom-drawer.open {
+        transform: translate(-50%, 0) !important;
+      }
+      #adminDrawer {
+        max-width: 920px !important;
+        border-radius: 20px !important;
+        bottom: auto !important;
+        top: 50% !important;
+        transform: translate(-50%, -40%) scale(0.95) !important;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.25s ease-out !important;
+      }
+      #adminDrawer.open {
+        transform: translate(-50%, -50%) scale(1) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+    }
+
+    /* 5-BOSQICH PROFESSIONAL CRM STATUS VA KARTALARI */
+    .crm-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .crm-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .crm-badge-yangi { background: #e0f2fe; color: #0369a1; }
+    .crm-badge-aloqa { background: #fef3c7; color: #b45309; }
+    .crm-badge-korik { background: #ede9fe; color: #6d28d9; }
+    .crm-badge-montaj { background: #ffedd5; color: #c2410c; }
+    .crm-badge-bajarildi { background: #dcfce7; color: #15803d; }
+    .crm-stage-btn {
+      padding: 5px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #f8fafc;
+      margin-right: 4px;
+      margin-top: 4px;
+    }
+    .crm-stage-btn:hover { background: #e2e8f0; }
+
   </style>
 </head>
 <body>
@@ -1420,36 +1498,97 @@
       if (tab === 'users') renderAdminUsersList();
     }
 
+    
     function renderAdminUsersList() {
       const container = document.getElementById('admUsersContainer');
       container.innerHTML = '';
-      const users = JSON.parse(localStorage.getItem('nat_registered_users')) || [];
+      let users = JSON.parse(localStorage.getItem('nat_registered_users')) || [];
 
-      // Default demo users if empty
       if (users.length === 0) {
-        users.push({
-          name: "Khikmatullo Turaev",
-          phone: "+998 91 410-99-69",
-          username: "KhikmatulloTuraev",
-          date: "Bugun"
-        });
+        users = [
+          {
+            id: 1,
+            name: "Khikmatullo Turaev",
+            phone: "+998 91 410-99-69",
+            extraPhone: "+998 90 123-45-67",
+            username: "KhikmatulloTuraev",
+            clientType: "Yuridik shaxs (Korxona)",
+            region: "Buxoro sh., Mustaqillik ko'chasi 14",
+            objectType: "Ofis & Omborxona",
+            interest: "Face ID SKUD + 8 ta ColorVu kamera",
+            date: "2026-11-18 20:20",
+            status: "Ko'rik belgilandi",
+            budget: "8 400 000 so'm"
+          },
+          {
+            id: 2,
+            name: "Jamshid Qodirov",
+            phone: "+998 93 381-00-11",
+            extraPhone: "-",
+            username: "jamshid_buxoro",
+            clientType: "Jismoniy shaxs",
+            region: "Vobkent tumani, Qo'ng'irot MFY",
+            objectType: "Hovli / Kottej",
+            interest: "4 Kamerali Hovli Komplekti",
+            date: "2026-11-18 19:40",
+            status: "Yangi",
+            budget: "3 130 000 so'm"
+          }
+        ];
+        localStorage.setItem('nat_registered_users', JSON.stringify(users));
       }
 
       users.forEach(u => {
         const div = document.createElement('div');
-        div.className = 'order-card-admin';
+        div.className = 'crm-card';
+        
+        let badgeClass = 'crm-badge-yangi';
+        if (u.status === "Aloqaga chiqildi") badgeClass = 'crm-badge-aloqa';
+        if (u.status === "Ko'rik belgilandi") badgeClass = 'crm-badge-korik';
+        if (u.status === "Montajda") badgeClass = 'crm-badge-montaj';
+        if (u.status === "Bajarildi") badgeClass = 'crm-badge-bajarildi';
+
         div.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
-            <b>👤 ${u.name}</b>
-            <span style="color:var(--accent-green); font-weight:700;">Faol</span>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+            <div>
+              <b style="font-size:13px; color:var(--text-main);">👤 ${u.name}</b>
+              <div style="font-size:11px; color:var(--text-muted);">Toifa: <b>${u.clientType || 'Jismoniy shaxs'}</b> | @${u.username || 'mavjud emas'}</div>
+            </div>
+            <span class="crm-badge ${badgeClass}" id="userStatusBadge_${u.id}">${u.status || 'Yangi'}</span>
           </div>
-          <div style="font-size:11px; color:var(--text-muted);">
-            📞 <b>${u.phone}</b> | @${u.username || 'mavjud emas'}
+
+          <div style="background:#f8fafc; border-radius:8px; padding:8px; font-size:11px; margin-bottom:8px; border:1px solid #e2e8f0;">
+            <div style="margin-bottom:3px;">📞 <b>Asosiy tel:</b> <a href="tel:${u.phone}" style="color:var(--gold-primary); font-weight:700;">${u.phone}</a></div>
+            <div style="margin-bottom:3px;">📍 <b>Obyekt & Manzil:</b> ${u.region || 'Buxoro'} (${u.objectType || 'Xususiy obyekt'})</div>
+            <div style="margin-bottom:3px;">🎯 <b>Texnik talab:</b> ${u.interest || 'Videokuzatuv tizimi'}</div>
+            <div>💰 <b>Mo'ljallangan byudjet:</b> <b>${u.budget || 'Kelishiladi'}</b></div>
           </div>
-          <div style="font-size:10px; color:var(--steel-muted); margin-top:3px;">Sana: ${u.date || 'Yangi'}</div>
+
+          <!-- 5-BOSQICH CRM BOSHQARUV TUGMALARI -->
+          <div style="font-size:10px; font-weight:800; color:var(--text-muted); margin-bottom:4px;">CRM BOSQICHINI O'ZGARTIRISH:</div>
+          <div style="display:flex; flex-wrap:wrap;">
+            <button class="crm-stage-btn" onclick="updateUserStatus(${u.id}, 'Yangi')">🟢 Yangi</button>
+            <button class="crm-stage-btn" onclick="updateUserStatus(${u.id}, 'Aloqaga chiqildi')">📞 Aloqa</button>
+            <button class="crm-stage-btn" onclick="updateUserStatus(${u.id}, 'Ko\'rik belgilandi')">🚗 Ko'rik</button>
+            <button class="crm-stage-btn" onclick="updateUserStatus(${u.id}, 'Montajda')">🔧 Montaj</button>
+            <button class="crm-stage-btn" onclick="updateUserStatus(${u.id}, 'Bajarildi')">✅ Bajarildi</button>
+          </div>
         `;
         container.appendChild(div);
       });
+    }
+
+    function updateUserStatus(userId, newStatus) {
+      let users = JSON.parse(localStorage.getItem('nat_registered_users')) || [];
+      users = users.map(u => {
+        if (u.id === userId) {
+          u.status = newStatus;
+        }
+        return u;
+      });
+      localStorage.setItem('nat_registered_users', JSON.stringify(users));
+      renderAdminUsersList();
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
     function saveNewProduct() {
