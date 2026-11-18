@@ -776,6 +776,29 @@
       transform: scale(1.05);
     }
 
+  
+    .drawer-close-btn {
+      width: 38px;
+      height: 38px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.2s;
+    }
+    .drawer-close-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+      transform: scale(1.08);
+    }
+
   </style>
 </head>
 <body>
@@ -949,7 +972,7 @@ id="cartDrawer">
     <div id="cartView">
       <div class="drawer-header">
         <h3>Savatcha & Tanlanganlar</h3>
-        <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseCart">&times;</span>
+        <button type="button" class="drawer-close-btn" id="btnCloseCart" onclick="closeAllDrawers();" aria-label="Yopish">✕</button>
       </div>
       <div id="cartItemsList"></div>
       <div style="margin-top: 14px; text-align: right; font-size: 15px; font-weight: 700;">
@@ -994,7 +1017,7 @@ id="cartDrawer">
   <div class="bottom-drawer" id="adminDrawer">
     <div class="drawer-header">
       <h3 style="color:var(--danger-red);">⚙️ NAT Security Admin Boshqaruv</h3>
-      <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseAdmin">&times;</span>
+      <button type="button" class="drawer-close-btn" id="btnCloseAdmin" onclick="closeAllDrawers();" aria-label="Yopish">✕</button>
     </div>
 
     <!-- ADMIN SUB-TABS -->
@@ -1802,7 +1825,17 @@ id="cartDrawer">
       switchAdminSubTab('add');
     });
 
-    function closeAllDrawers() {
+    
+    window.closeAllDrawers = function() {
+      const c = document.getElementById('cartDrawer');
+      const a = document.getElementById('adminDrawer');
+      const o = document.getElementById('drawerOverlay');
+      if (c) c.classList.remove('open');
+      if (a) a.classList.remove('open');
+      if (o) o.classList.remove('active');
+    };
+
+    function _oldClose() {
       cartDrawer.classList.remove('open');
       adminDrawer.classList.remove('open');
       overlay.classList.remove('active');
@@ -1814,6 +1847,11 @@ id="cartDrawer">
 
     renderCatalog();
     computeEstimate();
-  </script>
+  
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.closeAllDrawers();
+    });
+
+</script>
 </body>
 </html>
