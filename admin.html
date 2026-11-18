@@ -1010,17 +1010,29 @@
 
     // 1. SWITCH VIEW (TABS)
     window.switchView = function(viewName) {
-      // Toggle sidebar active
+      console.log("Switching to view:", viewName);
+      
+      // 1. Update sidebar active styles
       document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
       const activeItem = document.getElementById('menu-' + viewName);
       if (activeItem) activeItem.classList.add('active');
 
-      // Toggle views
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      const targetView = document.getElementById('view-' + viewName);
-      if (targetView) targetView.classList.add('active');
+      // 2. Direct style.display toggle on all sections
+      const sections = ['analytics', 'customers', 'orders', 'products', 'add'];
+      sections.forEach(s => {
+        const el = document.getElementById('view-' + s);
+        if (el) {
+          if (s === viewName) {
+            el.style.display = 'block';
+            el.classList.add('active');
+          } else {
+            el.style.display = 'none';
+            el.classList.remove('active');
+          }
+        }
+      });
 
-      // Update titles
+      // 3. Update top titles
       const titles = {
         'analytics': ["Boshqaruv Paneli & Real Vaqt Analitikasi", "Buxoro shahri va viloyat bo'yicha xavfsizlik tizimlari ko'rsatkichlari"],
         'customers': ["👥 Mijozlar Bazasi va CRM Boshqaruvi", "Barcha ro'yxatdan o'tgan mijozlar, obyekt manzillari va 5-bosqichli statuslar"],
@@ -1030,17 +1042,28 @@
       };
 
       if (titles[viewName]) {
-        document.getElementById('pageTitle').textContent = titles[viewName][0];
-        document.getElementById('pageSubTitle').textContent = titles[viewName][1];
+        const pt = document.getElementById('pageTitle');
+        const pst = document.getElementById('pageSubTitle');
+        if (pt) pt.textContent = titles[viewName][0];
+        if (pst) pst.textContent = titles[viewName][1];
       }
 
-      // Re-render corresponding data
+      // 4. Force re-render corresponding data tables
       if (viewName === 'customers') renderClientsTable();
       if (viewName === 'orders') renderOrdersTable();
       if (viewName === 'products') renderProductsTable();
-    }
+    };
 
-    // 2. RENDER CLIENTS (CRM)
+    // Attach direct listeners on DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      ['analytics', 'customers', 'orders', 'products', 'add'].forEach(v => {
+        const btn = document.getElementById('menu-' + v);
+        if (btn) {
+          btn.onclick = () => window.switchView(v);
+        }
+      });
+    });
+
     function renderClientsTable() {
       const tbody = document.getElementById('clientsTableBody');
       tbody.innerHTML = '';
