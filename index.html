@@ -880,10 +880,12 @@
       <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseAdmin">&times;</span>
     </div>
 
+    <!-- ADMIN SUB-TABS -->
     <div class="admin-nav-bar">
-      <div class="admin-nav-item active" id="admTabAdd" onclick="switchAdminSubTab('add')">+ Mahsulot Qo'shish</div>
-      <div class="admin-nav-item" id="admTabList" onclick="switchAdminSubTab('list')">📦 Tovarlar Ro'yxati</div>
+      <div class="admin-nav-item active" id="admTabAdd" onclick="switchAdminSubTab('add')">+ Tovar Qo'shish</div>
+      <div class="admin-nav-item" id="admTabList" onclick="switchAdminSubTab('list')">📦 Tovarlar</div>
       <div class="admin-nav-item" id="admTabOrders" onclick="switchAdminSubTab('orders')">📋 Buyurtmalar</div>
+      <div class="admin-nav-item" id="admTabUsers" onclick="switchAdminSubTab('users')">👥 Mijozlar</div>
     </div>
 
     <div id="admSectionAdd">
@@ -929,6 +931,12 @@
     <div id="admSectionOrders" style="display:none;">
       <h4 style="font-size:12px; color:var(--text-main); margin-bottom:8px; font-weight:800;">Tushgan Buyurtmalar Arxivi</h4>
       <div id="admOrdersContainer"></div>
+    </div>
+
+    <!-- BO'LIM 4: MIJOZLAR BAZASI -->
+    <div id="admSectionUsers" style="display:none;">
+      <h4 style="font-size:12px; color:var(--text-main); margin-bottom:8px; font-weight:800;">👥 Ro'yxatdan O'tgan Mijozlar Bazasi</h4>
+      <div id="admUsersContainer"></div>
     </div>
   </div>
 
@@ -1405,9 +1413,43 @@
       document.getElementById('admSectionAdd').style.display = tab === 'add' ? 'block' : 'none';
       document.getElementById('admSectionList').style.display = tab === 'list' ? 'block' : 'none';
       document.getElementById('admSectionOrders').style.display = tab === 'orders' ? 'block' : 'none';
+      document.getElementById('admSectionUsers').style.display = tab === 'users' ? 'block' : 'none';
 
       if (tab === 'list') renderAdminProductsList();
       if (tab === 'orders') renderAdminOrdersList();
+      if (tab === 'users') renderAdminUsersList();
+    }
+
+    function renderAdminUsersList() {
+      const container = document.getElementById('admUsersContainer');
+      container.innerHTML = '';
+      const users = JSON.parse(localStorage.getItem('nat_registered_users')) || [];
+
+      // Default demo users if empty
+      if (users.length === 0) {
+        users.push({
+          name: "Khikmatullo Turaev",
+          phone: "+998 91 410-99-69",
+          username: "KhikmatulloTuraev",
+          date: "Bugun"
+        });
+      }
+
+      users.forEach(u => {
+        const div = document.createElement('div');
+        div.className = 'order-card-admin';
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+            <b>👤 ${u.name}</b>
+            <span style="color:var(--accent-green); font-weight:700;">Faol</span>
+          </div>
+          <div style="font-size:11px; color:var(--text-muted);">
+            📞 <b>${u.phone}</b> | @${u.username || 'mavjud emas'}
+          </div>
+          <div style="font-size:10px; color:var(--steel-muted); margin-top:3px;">Sana: ${u.date || 'Yangi'}</div>
+        `;
+        container.appendChild(div);
+      });
     }
 
     function saveNewProduct() {
