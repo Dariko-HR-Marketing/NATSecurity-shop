@@ -4,7 +4,7 @@ import json
 import time
 import sys
 
-BOT_TOKEN = "9065226331:AAFLbs-1HgtFS05diSxF9FcxisuwZjzB2eE"
+BOT_TOKEN = "8884858490:AAHl3OQN3rEjX1_hnJEKqTkC0tu9ybY5qOs"
 WEBAPP_URL = "https://dariko-hr-marketing.github.io/NATSecurity-shop/"
 ADMIN_CHAT_ID = 944857221  # Sizning Telegram chat ID'ingiz
 
