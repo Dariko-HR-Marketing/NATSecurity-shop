@@ -665,46 +665,58 @@
       font-size: 12px;
     }
   
-    /* DESKTOP & WIDE SCREEN ADAPTATION */
+    /* MODERN RESPONSIVE APP WRAPPER */
+    body {
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .app-wrapper {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: #ffffff;
+      padding: 14px 14px 90px 14px;
+      box-shadow: 0 4px 25px rgba(15, 23, 42, 0.08);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
     @media (min-width: 768px) {
-      body {
-        background: #f1f5f9;
-        display: flex;
-        justify-content: center;
-      }
       .app-wrapper {
-        max-width: 880px;
-        width: 100%;
-        background: #ffffff;
-        min-height: 100vh;
-        box-shadow: 0 0 35px rgba(0,0,0,0.06);
+        max-width: 760px;
+        padding: 20px 24px 100px 24px;
+        border-radius: 16px;
+        margin: 20px 0;
       }
       .catalog-grid {
         grid-template-columns: repeat(3, 1fr) !important;
+        gap: 16px !important;
       }
       .bottom-drawer {
         left: 50% !important;
         transform: translate(-50%, 100%) !important;
-        max-width: 780px !important;
+        max-width: 680px !important;
         border-radius: 20px 20px 0 0 !important;
       }
       .bottom-drawer.open {
         transform: translate(-50%, 0) !important;
       }
       #adminDrawer {
-        max-width: 920px !important;
+        max-width: 740px !important;
         border-radius: 20px !important;
-        bottom: auto !important;
-        top: 50% !important;
-        transform: translate(-50%, -40%) scale(0.95) !important;
-        opacity: 0;
-        pointer-events: none;
-        transition: all 0.25s ease-out !important;
       }
-      #adminDrawer.open {
-        transform: translate(-50%, -50%) scale(1) !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
+    }
+    @media (min-width: 1100px) {
+      .app-wrapper {
+        max-width: 960px;
+      }
+      .catalog-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
       }
     }
 
@@ -768,7 +780,9 @@
 </head>
 <body>
 
-  <!-- HEADER -->
+  
+  <div class="app-wrapper">
+<!-- HEADER -->
   <header>
     <div class="brand-wrap">
       <img src="logo_light.jpg" alt="NAT Security" class="brand-logo-img">
@@ -928,7 +942,10 @@
 
   <!-- SAVATCHA VA XARID DRAWERI -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
-  <div class="bottom-drawer" id="cartDrawer">
+  <div class="bottom-drawer" 
+  </div>
+
+id="cartDrawer">
     <div id="cartView">
       <div class="drawer-header">
         <h3>Savatcha & Tanlanganlar</h3>
