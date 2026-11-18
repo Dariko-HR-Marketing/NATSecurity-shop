@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAT SECURITY - Professional Web Admin Panel & CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --sidebar-bg: #0f172a;
+      --sidebar-text: #94a3b8;
+      --sidebar-hover: #1e293b;
+      --sidebar-active: #b48512;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --gold-primary: #b48512;
+      --gold-light: #fefce8;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-orange: #f59e0b;
+      --danger-red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 1. CHAP TOMONDAGI DOIMIY PROFESSIONAL MENYU (SIDEBAR) */
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid #1e293b;
+      z-index: 50;
+      transition: width 0.3s;
+    }
+
+    .sidebar-brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .brand-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+    .brand-title span { color: var(--gold-primary); }
+    .brand-sub {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .sidebar-nav {
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #475569;
+      font-weight: 800;
+      padding: 8px 12px 4px 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sidebar-item:hover {
+      background: var(--sidebar-hover);
+      color: #ffffff;
+    }
+    .sidebar-item.active {
+      background: var(--sidebar-active);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(180, 133, 18, 0.35);
+    }
+    .sidebar-item .icon {
+      font-size: 18px;
+    }
+    .sidebar-badge {
+      margin-left: auto;
+      background: #ef4444;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0b1120;
+    }
+    .admin-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #ffffff;
+    }
+    .admin-info {
+      font-size: 12px;
+    }
+    .admin-name {
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .admin-role {
+      font-size: 10px;
+      color: #10b981;
+    }
+
+    /* 2. O'NG TOMONDAGI ASOSIY KONTENT VA DASHBOARD */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+
+    .top-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .header-left h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .header-left p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-action-primary {
+      background: var(--gold-primary);
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+      text-decoration: none;
+    }
+    .btn-action-primary:hover { opacity: 0.9; }
+
+    .content-body {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* KPI VIDJETLARI */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .kpi-card.green::before { background: var(--accent-green); }
+    .kpi-card.blue::before { background: var(--accent-blue); }
+    .kpi-card.gold::before { background: var(--gold-primary); }
+    .kpi-card.purple::before { background: var(--accent-purple); }
+
+    .kpi-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-main);
+      margin: 8px 0 4px 0;
+      font-family: 'Orbitron', sans-serif;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kpi-sub span {
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    /* GRID: DIAGRAMMALAR VA CHIZMALAR */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    .chart-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .chart-header h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* BAR CHART PROGRESS BARS */
+    .bar-row {
+      margin-bottom: 16px;
+    }
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .bar-track {
+      background: #f1f5f9;
+      height: 10px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+
+    /* CRM 5-BOSQICH FUNNEL */
+    .funnel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .funnel-step {
+      padding: 10px 14px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* CRM MIJOZLAR JADVALI */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+    th {
+      background: #f8fafc;
+      text-align: left;
+      padding: 12px 14px;
+      color: var(--text-muted);
+      font-weight: 800;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 14px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+    tr:hover td {
+      background: #f8fafc;
+    }
+    .badge-status {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .badge-yangi { background: #e0f2fe; color: #0369a1; }
+    .badge-aloqa { background: #fef3c7; color: #b45309; }
+    .badge-korik { background: #ede9fe; color: #6d28d9; }
+    .badge-montaj { background: #ffedd5; color: #c2410c; }
+    .badge-bajarildi { background: #dcfce7; color: #15803d; }
+
+    /* MEDIA QUERY FOR SMALL SCREENS */
+    @media (max-width: 1024px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .kpi-grid { grid-template-columns: 1fr; }
+      .content-body { padding: 16px; }
+      .top-header { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. CHAP TOMONDAGI DOIMIY PROFESSIONAL MENYU (SIDEBAR) -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="logo_light.jpg" alt="NAT Security" class="brand-logo-img">
+      <div>
+        <div class="brand-title">NAT <span>SECURITY</span></div>
+        <div class="brand-sub">Buxoro Web Admin CRM</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Asosiy Boshqaruv</div>
+      <div class="sidebar-item active" onclick="switchView('analytics')">
+        <span class="icon">📊</span>
+        <span>Analitika & Dashboard</span>
+      </div>
+      <div class="sidebar-item" onclick="switchView('customers')">
+        <span class="icon">👥</span>
+        <span>Mijozlar Bazasi (CRM)</span>
+        <span class="sidebar-badge">42</span>
+      </div>
+      <div class="sidebar-item" onclick="switchView('orders')">
+        <span class="icon">📋</span>
+        <span>Buyurtmalar & Smetalar</span>
+        <span class="sidebar-badge" style="background:#10b981;">18</span>
+      </div>
+
+      <div class="nav-label">Do'kon & Katalog</div>
+      <div class="sidebar-item" onclick="switchView('products')">
+        <span class="icon">📦</span>
+        <span>Mahsulotlar & Narxlar</span>
+      </div>
+      <div class="sidebar-item" onclick="switchView('add')">
+        <span class="icon">➕</span>
+        <span>Yangi Tovar Qo'shish</span>
+      </div>
+
+      <div class="nav-label">Tizim & Havolalar</div>
+      <a href="index.html" class="sidebar-item" style="color:var(--gold-primary);">
+        <span class="icon">🛡️</span>
+        <span>Mini App Do'koni</span>
+      </a>
+      <a href="https://t.me/NATSecurity_bot" target="_blank" class="sidebar-item">
+        <span class="icon">🤖</span>
+        <span>Telegram Bot (@NATSecurity_bot)</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-avatar">K</div>
+      <div class="admin-info">
+        <div class="admin-name">Khikmatullo Turaev</div>
+        <div class="admin-role">● Bosh Admin / Online</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. O'NG TOMONDAGI ASOSIY KONTENT -->
+  <main class="main-content">
+    <header class="top-header">
+      <div class="header-left">
+        <h2 id="pageTitle">Boshqaruv Paneli & Real Vaqt Analitikasi</h2>
+        <p>Buxoro shahri va viloyat bo'yicha xavfsizlik tizimlari ko'rsatkichlari</p>
+      </div>
+      <div class="header-actions">
+        <a href="index.html" class="btn-action-primary">
+          <span>🛍️ Do'konni Ko'rish</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- 4 TA KPI BLOKI -->
+      <section class="kpi-grid">
+        <div class="kpi-card gold">
+          <div class="kpi-title">JAMI OYLIK TUSHUM</div>
+          <div class="kpi-value">23.8M</div>
+          <div class="kpi-sub"><span>↑ +18.4%</span> o'tgan oyga nisbatan</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-title">MUVOFIQ BUYURTMALAR</div>
+          <div class="kpi-value">18 ta</div>
+          <div class="kpi-sub"><span>94.2%</span> tasdiqlangan va o'rnatilgan</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-title">FAOL MIJOZLAR (CRM)</div>
+          <div class="kpi-value">42 nafar</div>
+          <div class="kpi-sub"><span>+12 ta</span> bu hafta ro'yxatdan o'tdi</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-title">MONTAJ VA SERVIS</div>
+          <div class="kpi-value">12 obyekt</div>
+          <div class="kpi-sub">Buxoro shahar & viloyatda</div>
+        </div>
+      </section>
+
+      <!-- 2 TA ASOSIY GRAFIK VA DIAGRAMMA -->
+      <section class="charts-grid">
+        <!-- DIAGRAMMA 1: MAHSULOTLAR TALABI -->
+        <div class="chart-box">
+          <div class="chart-header">
+            <h3>📈 Tizimlar va Mahsulotlarga Talab Grafigi</h3>
+            <span style="font-size:12px; color:var(--text-muted);">Oy bo'yicha hisobot</span>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>📹 Tashqi va ColorVu Videokuzatuv Kameralari</span>
+              <span style="color:var(--gold-primary);">52% (22 ta obyekt)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 52%; background: var(--gold-primary);"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>🚪 SKUD, Face ID va Smart Biometrik Qulflar</span>
+              <span style="color:var(--accent-blue);">26% (11 ta obyekt)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 26%; background: var(--accent-blue);"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>🚧 Tripod Turniketlar va Avtomatik Shlagbaumlar</span>
+              <span style="color:var(--accent-purple);">14% (6 ta obyekt)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 14%; background: var(--accent-purple);"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>🛠️ Bepul Ko'rik, Diagnostika va Ta'mirlash</span>
+              <span style="color:var(--accent-green);">8% (3 ta obyekt)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 8%; background: var(--accent-green);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIAGRAMMA 2: 5-BOSQICH CRM VORONKASI -->
+        <div class="chart-box">
+          <div class="chart-header">
+            <h3>🎯 CRM Voronkasi (5 Bosqich)</h3>
+            <span style="font-size:12px; color:var(--text-muted);">Konversiya</span>
+          </div>
+
+          <div class="funnel-list">
+            <div class="funnel-step" style="background:#e0f2fe; color:#0369a1;">
+              <span>1. Yangi murojaatlar</span>
+              <b>42 ta</b>
+            </div>
+            <div class="funnel-step" style="background:#fef3c7; color:#b45309; margin-left:8px;">
+              <span>2. Aloqaga chiqildi</span>
+              <b>34 ta</b>
+            </div>
+            <div class="funnel-step" style="background:#ede9fe; color:#6d28d9; margin-left:16px;">
+              <span>3. Ko'rik belgilandi</span>
+              <b>21 ta</b>
+            </div>
+            <div class="funnel-step" style="background:#ffedd5; color:#c2410c; margin-left:24px;">
+              <span>4. Montaj jarayonida</span>
+              <b>12 ta</b>
+            </div>
+            <div class="funnel-step" style="background:#dcfce7; color:#15803d; margin-left:32px;">
+              <span>5. Bajarildi & Kafolatda</span>
+              <b>9 ta</b>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JADVAL: MIJOZLAR CRM ROYXATI -->
+      <section class="table-container">
+        <div class="chart-header">
+          <h3>👥 Ro'yxatdan O'tgan Mijozlar va CRM Holatlari</h3>
+          <span style="font-size:12px; color:var(--text-muted);">Real vaqt yangilanishi</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mijoz F.I.O</th>
+              <th>Telefon</th>
+              <th>Toifa</th>
+              <th>Hudud / Obyekt</th>
+              <th>Texnik Ehtiyoj</th>
+              <th>CRM Holati</th>
+            </tr>
+          </thead>
+          <tbody id="crmTableBody">
+            <tr>
+              <td><b>#1028</b></td>
+              <td><b>Buxoro Neft Baza</b></td>
+              <td>+998 91 410-99-69</td>
+              <td>Yuridik shaxs</td>
+              <td>Buxoro sh. (Omborxona)</td>
+              <td>Tripod Turniket + Face ID SKUD</td>
+              <td><span class="badge-status badge-montaj">🔧 Montajda</span></td>
+            </tr>
+            <tr>
+              <td><b>#1027</b></td>
+              <td><b>Jamshid Qodirov</b></td>
+              <td>+998 93 381-00-11</td>
+              <td>Jismoniy shaxs</td>
+              <td>Vobkent tumani (Hovli)</td>
+              <td>4 Kamerali ColorVu Komplekt</td>
+              <td><span class="badge-status badge-korik">🚗 Ko'rik belgilandi</span></td>
+            </tr>
+            <tr>
+              <td><b>#1026</b></td>
+              <td><b>Alisher Safarov</b></td>
+              <td>+998 90 712-44-33</td>
+              <td>Tadbirkor</td>
+              <td>G'ijduvon (Savdo do'koni)</td>
+              <td>PTZ 360° + 8 ta IP Kamera</td>
+              <td><span class="badge-status badge-aloqa">📞 Aloqaga chiqildi</span></td>
+            </tr>
+            <tr>
+              <td><b>#1025</b></td>
+              <td><b>Mirzo Ulug'bek MFY</b></td>
+              <td>+998 97 300-12-12</td>
+              <td>Davlat muassasasi</td>
+              <td>Buxoro sh. (Bino)</td>
+              <td>Avtomatik Shlagbaum (4m)</td>
+              <td><span class="badge-status badge-bajarildi">✅ Bajarildi</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function switchView(tab) {
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+      const items = document.querySelectorAll('.sidebar-item');
+      if (tab === 'analytics') items[0].classList.add('active');
+      if (tab === 'customers') items[1].classList.add('active');
+      if (tab === 'orders') items[2].classList.add('active');
+      if (tab === 'products') items[3].classList.add('active');
+      if (tab === 'add') items[4].classList.add('active');
+    }
+  </script>
+</body>
+</html>
