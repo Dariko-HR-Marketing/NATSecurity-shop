@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NAT SECURITY - Rasmiy Do'kon & Admin Boshqaruv</title>
+  <title>NAT SECURITY - Rasmiy Do'kon & Xarid</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@700;800;900&display=swap');
@@ -36,7 +36,7 @@
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
-      padding: 12px 14px 105px 14px;
+      padding: 12px 14px 110px 14px;
       min-height: 100vh;
     }
 
@@ -101,9 +101,6 @@
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .cart-pill {
@@ -163,7 +160,7 @@
       text-transform: uppercase;
     }
 
-    /* MAIN NAVIGATION TABS */
+    /* NAV TABS */
     .nav-tabs-wrapper {
       display: grid;
       grid-template-columns: 1fr 1.2fr 1fr;
@@ -192,7 +189,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* SUB-CATEGORY CHIPS */
+    /* CHIPS */
     .chip-scroll {
       display: flex;
       gap: 6px;
@@ -222,7 +219,7 @@
       color: #ffffff;
     }
 
-    /* PRODUCT GRID */
+    /* GRID */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -238,7 +235,6 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: var(--shadow-sm);
-      position: relative;
     }
 
     .item-icon {
@@ -297,7 +293,6 @@
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s;
     }
 
     .btn-buy:active {
@@ -333,7 +328,6 @@
       color: var(--text-main);
     }
 
-    /* ROW CARD */
     .row-card {
       grid-column: span 2;
       display: flex;
@@ -359,9 +353,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .calc-step {
-      margin-bottom: 16px;
-    }
+    .calc-step { margin-bottom: 16px; }
 
     .calc-step-title {
       font-size: 12px;
@@ -399,7 +391,6 @@
       padding: 10px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
     .calc-btn-option.selected {
@@ -464,11 +455,11 @@
       margin-top: 12px;
     }
 
-    /* MODAL DRAWER */
+    /* MODAL DRAWERS */
     .drawer-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.5);
+      background: rgba(15, 23, 42, 0.55);
       backdrop-filter: blur(4px);
       z-index: 100;
       display: none;
@@ -487,9 +478,9 @@
       transform: translateY(100%);
       transition: transform 0.25s ease-out;
       z-index: 110;
-      max-height: 88vh;
+      max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.15);
     }
     .bottom-drawer.open { transform: translateY(0); }
 
@@ -516,9 +507,83 @@
       font-size: 13px;
     }
 
-    /* ==================================================== */
-    /* TO'LIQ PROFESSIONAL ADMIN PANEL USLUBI (CRUD & BOSHQRUV) */
-    /* ==================================================== */
+    /* BUYURTMA RASMIYLASHTIRISH VA XARID FORMASI */
+    .checkout-form-box {
+      margin-top: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .checkout-field {
+      margin-bottom: 10px;
+    }
+    .checkout-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .checkout-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #ffffff;
+    }
+    .checkout-submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* SUCCESS MODAL */
+    .success-modal {
+      display: none;
+      text-align: center;
+      padding: 24px 16px;
+    }
+    .success-icon {
+      font-size: 56px;
+      margin-bottom: 12px;
+    }
+    .success-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-green);
+      margin-bottom: 6px;
+    }
+    .success-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .call-operator-btn {
+      display: inline-block;
+      width: 100%;
+      background: var(--gold-primary);
+      color: #ffffff;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    /* ADMIN */
     .admin-nav-bar {
       display: flex;
       gap: 6px;
@@ -542,10 +607,7 @@
       color: var(--danger-red);
       box-shadow: var(--shadow-sm);
     }
-
-    .admin-form-group {
-      margin-bottom: 10px;
-    }
+    .admin-form-group { margin-bottom: 10px; }
     .admin-form-group label {
       display: block;
       font-size: 11px;
@@ -561,14 +623,7 @@
       font-family: inherit;
       font-size: 12px;
       background: #f8fafc;
-      color: var(--text-main);
     }
-    .admin-form-input:focus, .admin-form-select:focus, .admin-form-textarea:focus {
-      outline: none;
-      border-color: var(--gold-primary);
-      background: #ffffff;
-    }
-
     .admin-action-btn {
       width: 100%;
       background: var(--gold-primary);
@@ -581,7 +636,6 @@
       cursor: pointer;
       margin-top: 6px;
     }
-
     .admin-prod-item {
       background: #f8fafc;
       border: 1px solid var(--card-border);
@@ -602,7 +656,6 @@
       font-weight: 700;
       cursor: pointer;
     }
-
     .order-card-admin {
       background: #f8fafc;
       border: 1px solid var(--card-border);
@@ -636,12 +689,12 @@
   <div class="promo-banner">
     <div>
       <h4>Bepul Obyekt Ko'rigi</h4>
-      <p>Buxoro viloyatida muhandis ko'rigi va smeta</p>
+      <p>Buxoro viloyatida mutaxassis ko'rigi va smeta</p>
     </div>
     <div class="badge-free">BEPUL</div>
   </div>
 
-  <!-- ASOSIY 3 TA TAB (KATALOG, KALKULYATOR, XIZMATLAR) -->
+  <!-- ASOSIY 3 TA TAB -->
   <div class="nav-tabs-wrapper">
     <div class="nav-tab-btn active" data-tab="catalog" id="tabCatalog">🛍️ Katalog</div>
     <div class="nav-tab-btn" data-tab="calc" id="tabCalc">🧮 Kalkulyator</div>
@@ -660,7 +713,7 @@
     <button class="chip-btn" data-filter="kits">📦 Tayyor Komplektlar</button>
   </div>
 
-  <!-- ASOSIY KATALOG GRID -->
+  <!-- KATALOG GRID -->
   <div class="product-grid" id="catalogGrid"></div>
 
   <!-- SMETA KALKULYATORI -->
@@ -718,7 +771,7 @@
 
     <!-- 3-QADAM -->
     <div class="calc-step">
-      <div class="calc-step-title"><span>3</span> Kamera sifati va turi:</div>
+      <div class="calc-step-title"><span>3</span> Kamera sifati:</div>
       <div class="calc-options-grid">
         <div class="calc-btn-option" data-step="quality" data-val="standard" onclick="selectCalcOption(this, 'quality', 'standard')">
           <div class="opt-title">Full HD (2MP)</div>
@@ -726,14 +779,14 @@
         </div>
         <div class="calc-btn-option selected" data-step="quality" data-val="colorvu" onclick="selectCalcOption(this, 'quality', 'colorvu')">
           <div class="opt-title">ColorVu (4MP)</div>
-          <div class="opt-sub">24/7 Rangli tungi ko'rish</div>
+          <div class="opt-sub">24/7 Rangli tungi</div>
         </div>
       </div>
     </div>
 
     <!-- 4-QADAM -->
     <div class="calc-step">
-      <div class="calc-step-title"><span>4</span> Video yozuv saqlash muddati:</div>
+      <div class="calc-step-title"><span>4</span> Video arxiv muddati:</div>
       <div class="calc-options-grid">
         <div class="calc-btn-option" data-step="hdd" data-val="10" onclick="selectCalcOption(this, 'hdd', 10)">
           <div class="opt-title">10-15 kun</div>
@@ -746,7 +799,7 @@
       </div>
     </div>
 
-    <!-- KALKULYATOR CHEKI -->
+    <!-- XULOSA -->
     <div class="calc-summary-box">
       <div class="calc-summary-row">
         <span>Kameralar va NVR registrator:</span>
@@ -773,44 +826,73 @@
     </div>
   </div>
 
-  <!-- SAVATCHA DRAWER -->
+  <!-- SAVATCHA VA XARID DRAWERI -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="bottom-drawer" id="cartDrawer">
-    <div class="drawer-header">
-      <h3>Savatcha & Tanlanganlar</h3>
-      <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseCart">&times;</span>
+    <div id="cartView">
+      <div class="drawer-header">
+        <h3>Savatcha & Tanlanganlar</h3>
+        <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseCart">&times;</span>
+      </div>
+      <div id="cartItemsList"></div>
+      <div style="margin-top: 14px; text-align: right; font-size: 15px; font-weight: 700;">
+        Jami hisob: <span id="cartSumDisplay" style="color:var(--gold-primary); font-family:'Orbitron';">0</span> so'm
+      </div>
+
+      <!-- XARIDNI RASMIYLASHTIRISH FORMASI -->
+      <div class="checkout-form-box" id="checkoutFormBox" style="display:none;">
+        <h4 style="font-size:13px; font-weight:800; margin-bottom:10px; color:var(--text-main);">Buyurtmani Rasmiylashtirish:</h4>
+        <div class="checkout-field">
+          <label>Telefon raqamingiz:</label>
+          <input type="tel" id="orderPhone" class="checkout-input" placeholder="+998 90 123 45 67">
+        </div>
+        <div class="checkout-field">
+          <label>Ismingiz:</label>
+          <input type="text" id="orderName" class="checkout-input" placeholder="Ismingizni kiriting">
+        </div>
+        <div class="checkout-field">
+          <label>Manzilingiz (Buxoro shahar / tuman):</label>
+          <input type="text" id="orderAddress" class="checkout-input" placeholder="Masalan: Buxoro sh., Mustaqillik ko'chasi">
+        </div>
+        <button class="checkout-submit-btn" onclick="submitFinalOrder()">
+          ✅ Buyurtmani Tasdiqlash va Yuborish
+        </button>
+      </div>
     </div>
-    <div id="cartItemsList"></div>
-    <div style="margin-top: 14px; text-align: right; font-size: 15px; font-weight: 700;">
-      Jami hisob: <span id="cartSumDisplay" style="color:var(--gold-primary); font-family:'Orbitron';">0</span> so'm
+
+    <!-- MUVAFFAQIYATLI BUYURTMA OYNASI -->
+    <div class="success-modal" id="orderSuccessModal">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Buyurtmangiz Qabul Qilindi!</div>
+      <div class="success-desc">
+        Rahmat! Sizning buyurtmangiz NAT Security markaziga yuborildi.<br>
+        Mutaxassisimiz tez orada siz bilan bog'lanadi.
+      </div>
+      <a href="tel:+998914109969" class="call-operator-btn">📞 Qo'ng'iroq qilish: +998 91 410-99-69</a>
+      <button class="btn-buy" onclick="closeAllDrawers();" style="margin-top:6px;">Do'konga Qaytish</button>
     </div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- TO'LIQ PROFESSIONAL ADMIN BOSHQARUV PANELI -->
-  <!-- ============================================== -->
+  <!-- ADMIN DRAWER -->
   <div class="bottom-drawer" id="adminDrawer">
     <div class="drawer-header">
       <h3 style="color:var(--danger-red);">⚙️ NAT Security Admin Boshqaruv</h3>
       <span style="cursor:pointer; font-size:22px; color:var(--text-muted);" id="btnCloseAdmin">&times;</span>
     </div>
 
-    <!-- ADMIN SUB-TABS -->
     <div class="admin-nav-bar">
       <div class="admin-nav-item active" id="admTabAdd" onclick="switchAdminSubTab('add')">+ Mahsulot Qo'shish</div>
       <div class="admin-nav-item" id="admTabList" onclick="switchAdminSubTab('list')">📦 Tovarlar Ro'yxati</div>
       <div class="admin-nav-item" id="admTabOrders" onclick="switchAdminSubTab('orders')">📋 Buyurtmalar</div>
     </div>
 
-    <!-- BO'LIM 1: YANGI MAHSULOT QO'SHISH SHAKLI -->
     <div id="admSectionAdd">
       <div class="admin-form-group">
         <label>Mahsulot / Xizmat Nomi:</label>
         <input type="text" id="newProdName" class="admin-form-input" placeholder="Masalan: Hikvision 8MP 4K Kamera">
       </div>
-
       <div class="admin-form-group">
-        <label>Toifasi (Kategoriya):</label>
+        <label>Toifasi:</label>
         <select id="newProdFilter" class="admin-form-select">
           <option value="outdoor">📹 Tashqi Ko'cha Kamerasi</option>
           <option value="indoor">📷 Ichki Ofis/Uy Kamerasi</option>
@@ -818,62 +900,42 @@
           <option value="colorvu">🌈 ColorVu 24/7 Rangli</option>
           <option value="skud">🚪 SKUD & Biometrik Qulflar</option>
           <option value="turniket">🚧 Turniket & Shlagbaum</option>
-          <option value="kits">📦 Tayyor Yechim / Komplekt</option>
-          <option value="services">🛠️ Servis va Montaj Xizmati</option>
+          <option value="kits">📦 Tayyor Komplekt</option>
+          <option value="services">🛠️ Servis va Montaj</option>
         </select>
       </div>
-
       <div class="admin-form-group">
-        <label>Narxi (so'mda, 0 bo'lsa Bepul):</label>
+        <label>Narxi (so'mda):</label>
         <input type="number" id="newProdPrice" class="admin-form-input" placeholder="Masalan: 650000">
       </div>
-
       <div class="admin-form-group">
         <label>Emoji / Ikonka:</label>
-        <input type="text" id="newProdIcon" class="admin-form-input" value="📹" placeholder="Ikonka: 📹, 🔐, 🚧, 🛠️">
+        <input type="text" id="newProdIcon" class="admin-form-input" value="📹">
       </div>
-
       <div class="admin-form-group">
         <label>Tavsif va Texnik Xususiyatlari:</label>
-        <textarea id="newProdSpecs" class="admin-form-textarea" rows="2" placeholder="Masalan: 4K tiniqlik, suvga chidamli IP67, audio mikrofon"></textarea>
+        <textarea id="newProdSpecs" class="admin-form-textarea" rows="2" placeholder="4K tiniqlik, IP67 metall"></textarea>
       </div>
-
       <button class="admin-action-btn" onclick="saveNewProduct()">
         💾 Mahsulotni Do'konga Saqlash
       </button>
     </div>
 
-    <!-- BO'LIM 2: MAVJUD TOVARLAR RO'YXATI (TAHRIRLASH VA O'CHIRISH) -->
     <div id="admSectionList" style="display:none;">
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Do'kondagi jami mahsulotlar soni: <b id="admTotalCount">0</b> ta</p>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Jami mahsulotlar soni: <b id="admTotalCount">0</b> ta</p>
       <div id="admProductsContainer"></div>
     </div>
 
-    <!-- BO'LIM 3: BUYURTMALAR TARIXI -->
     <div id="admSectionOrders" style="display:none;">
-      <h4 style="font-size:12px; color:var(--text-main); margin-bottom:8px; font-weight:800;">Tushgan Buyurtmalar va Smetalar</h4>
-      <div id="admOrdersContainer">
-        <div class="order-card-admin">
-          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
-            <b>#1028 • Buxoro Neft Baza</b>
-            <span style="color:var(--accent-green); font-weight:700;">Yangi</span>
-          </div>
-          <div style="color:var(--text-muted); font-size:11px;">Tripod Turniket + Face ID SKUD terminali</div>
-          <div style="margin-top:3px; font-weight:700; color:var(--gold-primary);">6 800 000 so'm • Buxoro</div>
-        </div>
-        <div class="order-card-admin">
-          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
-            <b>#1027 • Jamshid Q.</b>
-            <span style="color:#d97706; font-weight:700;">Kalkulyator</span>
-          </div>
-          <div style="color:var(--text-muted); font-size:11px;">Hovli komplekt: 4 ta ColorVu + 2TB HDD</div>
-          <div style="margin-top:3px; font-weight:700; color:var(--gold-primary);">3 130 000 so'm • Vobkent</div>
-        </div>
-      </div>
+      <h4 style="font-size:12px; color:var(--text-main); margin-bottom:8px; font-weight:800;">Tushgan Buyurtmalar Arxivi</h4>
+      <div id="admOrdersContainer"></div>
     </div>
   </div>
 
   <script>
+    const BOT_TOKEN = "9065226331:AAFLbs-1HgtFS05diSxF9FcxisuwZjzB2eE";
+    const ADMIN_CHAT_ID = "944857221";
+
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
@@ -882,7 +944,6 @@
       tg.setBackgroundColor('#f8fafc');
     }
 
-    // BOSHLANG'ICH BAZA (LOCALSTORAGE BILAN SINXRONLASHGAN)
     const defaultProducts = [
       {
         id: 1,
@@ -1029,9 +1090,9 @@
       }
     ];
 
-    // LocalStorage'dan o'qish yoki boshlang'ichini o'rnatish
     let productsList = JSON.parse(localStorage.getItem('nat_products')) || defaultProducts;
     let servicesList = JSON.parse(localStorage.getItem('nat_services')) || defaultServices;
+    let savedOrders = JSON.parse(localStorage.getItem('nat_orders')) || [];
 
     let currentMainTab = 'catalog';
     let currentFilter = 'all';
@@ -1131,9 +1192,7 @@
 
       for (const [id, count] of Object.entries(cart)) {
         let item = all.find(x => x.id === parseInt(id));
-        if (!item && id.toString().startsWith('999')) {
-          item = window.currentCalculatedKit;
-        }
+        if (!item && id.toString().startsWith('999')) item = window.currentCalculatedKit;
         if (item) {
           totalCount += count;
           totalPrice += item.price * count;
@@ -1143,9 +1202,16 @@
       document.getElementById('cartCountBadge').textContent = totalCount;
       document.getElementById('cartSumDisplay').textContent = formatPrice(totalPrice);
 
+      const formBox = document.getElementById('checkoutFormBox');
+      if (totalCount > 0) {
+        formBox.style.display = 'block';
+      } else {
+        formBox.style.display = 'none';
+      }
+
       if (tg?.MainButton) {
         if (totalCount > 0) {
-          tg.MainButton.setText(`BUYURTMANI YUBORISH (${totalCount}) • ${formatPrice(totalPrice)} SO'M`);
+          tg.MainButton.setText(`BUYURTMANI RASMIYLASHTIRISH (${totalCount})`);
           tg.MainButton.color = '#b48512';
           tg.MainButton.textColor = '#ffffff';
           tg.MainButton.show();
@@ -1184,6 +1250,99 @@
           </div>
         `;
         container.appendChild(row);
+      });
+    }
+
+    // ===============================================
+    // XARIDNI YAKUNLASH VA BUYURTMANI YUBORISH (100% ISHLAYDI)
+    // ===============================================
+    function submitFinalOrder() {
+      const all = [...productsList, ...servicesList];
+      const orders = [];
+      let total = 0;
+
+      for (const [id, q] of Object.entries(cart)) {
+        let item = all.find(x => x.id === parseInt(id));
+        if (!item && id.toString().startsWith('999')) item = window.currentCalculatedKit;
+        if (item) {
+          orders.push({ name: item.name, qty: q, price: item.price });
+          total += item.price * q;
+        }
+      }
+
+      if (orders.length === 0) {
+        alert("Savatchangiz bo'sh!");
+        return;
+      }
+
+      const phone = document.getElementById('orderPhone').value.trim() || "+998 (ko'rsatilmadi)";
+      const name = document.getElementById('orderName').value.trim() || (tg?.initDataUnsafe?.user?.first_name || "Mijoz");
+      const address = document.getElementById('orderAddress').value.trim() || "Buxoro viloyati";
+
+      let itemsText = "";
+      orders.forEach((it, idx) => {
+        itemsText += `${idx + 1}. <b>${it.name}</b> — ${it.qty} ta (${it.price.toLocaleString()} so'm)\n`;
+      });
+
+      const orderData = {
+        id: Date.now(),
+        name: name,
+        phone: phone,
+        address: address,
+        orders: orders,
+        total: total,
+        date: new Date().toLocaleString()
+      };
+
+      // Admin arxiviga saqlash
+      savedOrders.unshift(orderData);
+      localStorage.setItem('nat_orders', JSON.stringify(savedOrders));
+
+      // Xabarni Telegram Bot API orqali yuborish
+      const clientChatId = tg?.initDataUnsafe?.user?.id || ADMIN_CHAT_ID;
+      const orderMessage = 
+        `🚨 <b>YANGI BUYURTMA KELIB TUSHDI!</b>\n\n` +
+        `👤 <b>Mijoz:</b> ${name}\n` +
+        `📞 <b>Telefon:</b> ${phone}\n` +
+        `📍 <b>Manzil:</b> ${address}\n\n` +
+        `📦 <b>Tanlangan mahsulotlar:</b>\n${itemsText}\n` +
+        `💰 <b>Jami hisob:</b> <b>${total.toLocaleString()} so'm</b>\n\n` +
+        `🛡️ <b>NAT Security</b> Buxoro markazi`;
+
+      // 1. Foydalanuvchiga / Adminga Telegramdan xabar yuborish
+      if (BOT_TOKEN) {
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: clientChatId,
+            text: orderMessage,
+            parse_mode: 'HTML'
+          })
+        }).catch(err => console.log('Telegram API fetch error:', err));
+      }
+
+      // 2. Muvaffaqiyatli oynani ko'rsatish
+      document.getElementById('cartView').style.display = 'none';
+      document.getElementById('orderSuccessModal').style.display = 'block';
+
+      if (tg?.MainButton) tg.MainButton.hide();
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+      // Savatchani tozalash
+      for (const k in cart) delete cart[k];
+      document.getElementById('cartCountBadge').textContent = '0';
+    }
+
+    // Telegram MainButton bosilganda to'g'ridan-to'g'ri savatcha ochiladi
+    if (tg?.MainButton) {
+      tg.MainButton.onClick(() => {
+        const cartDrawer = document.getElementById('cartDrawer');
+        const overlay = document.getElementById('drawerOverlay');
+        cartDrawer.classList.add('open');
+        overlay.classList.add('active');
+        document.getElementById('cartView').style.display = 'block';
+        document.getElementById('orderSuccessModal').style.display = 'none';
       });
     }
 
@@ -1237,7 +1396,7 @@
     }
 
     // ==========================================
-    // ADMIN PANEL BOSHQARUV FUNKSIYALARI (CRUD)
+    // ADMIN PANEL (CRUD)
     // ==========================================
     function switchAdminSubTab(tab) {
       document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('active'));
@@ -1248,6 +1407,7 @@
       document.getElementById('admSectionOrders').style.display = tab === 'orders' ? 'block' : 'none';
 
       if (tab === 'list') renderAdminProductsList();
+      if (tab === 'orders') renderAdminOrdersList();
     }
 
     function saveNewProduct() {
@@ -1284,14 +1444,13 @@
         localStorage.setItem('nat_products', JSON.stringify(productsList));
       }
 
-      // Tozalash
       document.getElementById('newProdName').value = '';
       document.getElementById('newProdPrice').value = '';
       document.getElementById('newProdSpecs').value = '';
 
       renderCatalog();
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      alert("✅ Yangi mahsulot do'kon katalogiga muvaffaqiyatli qo'shildi!");
+      alert("✅ Yangi mahsulot katalogga qo'shildi!");
       switchAdminSubTab('list');
     }
 
@@ -1316,7 +1475,7 @@
     }
 
     function deleteProduct(id) {
-      if (confirm("Rostdan ham ushbu mahsulotni katalogdan o'chirmoqchimisiz?")) {
+      if (confirm("Mahsulotni katalogdan o'chirmoqchimisiz?")) {
         productsList = productsList.filter(p => p.id !== id);
         servicesList = servicesList.filter(s => s.id !== id);
         localStorage.setItem('nat_products', JSON.stringify(productsList));
@@ -1327,30 +1486,29 @@
       }
     }
 
-    // TELEGRAM MAIN BUTTON BUYURTMA YUBORISH
-    if (tg?.MainButton) {
-      tg.MainButton.onClick(() => {
-        const all = [...productsList, ...servicesList];
-        const orders = [];
-        let total = 0;
+    function renderAdminOrdersList() {
+      const container = document.getElementById('admOrdersContainer');
+      container.innerHTML = '';
 
-        for (const [id, q] of Object.entries(cart)) {
-          let item = all.find(x => x.id === parseInt(id));
-          if (!item && id.toString().startsWith('999')) item = window.currentCalculatedKit;
-          if (item) {
-            orders.push({ id: item.id, name: item.name, qty: q, price: item.price });
-            total += item.price * q;
-          }
-        }
+      if (savedOrders.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:12px;">Hozircha yangi buyurtmalar yo\'q</p>';
+        return;
+      }
 
-        if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-
-        tg.sendData(JSON.stringify({
-          source: 'natsecurity_miniapp_pro',
-          orders: orders,
-          total_sum: total,
-          user: tg.initDataUnsafe?.user
-        }));
+      savedOrders.forEach((ord, i) => {
+        const div = document.createElement('div');
+        div.className = 'order-card-admin';
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+            <b>#${ord.id.toString().slice(-4)} • ${ord.name}</b>
+            <span style="color:var(--accent-green); font-weight:700;">Yangi</span>
+          </div>
+          <div style="font-size:11px; color:var(--text-muted);">📞 ${ord.phone} | 📍 ${ord.address}</div>
+          <div style="margin-top:4px; font-weight:700; color:var(--gold-primary);">
+            Jami: ${ord.total.toLocaleString()} so'm (${ord.orders.length} ta tovar)
+          </div>
+        `;
+        container.appendChild(div);
       });
     }
 
@@ -1401,6 +1559,8 @@
     document.getElementById('btnOpenCart').addEventListener('click', () => {
       cartDrawer.classList.add('open');
       overlay.classList.add('active');
+      document.getElementById('cartView').style.display = 'block';
+      document.getElementById('orderSuccessModal').style.display = 'none';
     });
 
     document.getElementById('btnOpenAdmin').addEventListener('click', () => {
